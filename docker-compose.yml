@@ -1,0 +1,15 @@
+version: '3.4'
+services:
+  
+  pdspi-guidance-sars-triage:
+    build:
+      context: .
+    restart: always
+    environment:
+      PDS_HOST: $PDS_HOST
+      PDS_PORT: $PDS_PORT
+      PDS_VERSION: $PDS_VERSION
+    ports:
+      - $API_PORT:8080
+
+    
