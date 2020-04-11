@@ -74,8 +74,8 @@ guidance = {
     "cards": [
         {
             "id": "string",
-            "title": "string",
-            "summary": "some <140 char Summary Message",
+            "title": "Recommendation",
+            "summary": "The patient has high risk of infection and should be tested for SARS virus with a treatment plan",
             "detail": "some sort of optional GitHub Markdown details",
             "indicator": "info",
             "source": {
@@ -86,14 +86,14 @@ guidance = {
             "suggestions": [
                 {
                     "uuid": "e1187895-ad57-4ff7-a1f1-ccf954b2fe46",
-                    "label": "Human-readable suggestion label",
+                    "label": "High risk patient",
                     "actions": [
                         {
-                            "title": "string",
+                            "title": "Diagnosis and treatment",
                             "id": "string",
                             "type": "create",
                             "description": "Create a triage plan for the patient",
-                            "resource": "ResourceRequest"
+                            "resource": "TreatmentRequest"
                         }
                     ]
                 }
