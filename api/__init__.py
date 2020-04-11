@@ -139,9 +139,9 @@ def generate_vis_outputs(age=None, weight=None, bmi=None):
             "id": "oid-1",
             "name": "Daily confirmed new cases",
             "description": "Daily confirmed new case outbreak evolution at the patient's location",
-            "data": generate_time_series_data(50, 4),
+            "data": generate_time_series_data(50),
             "specs": [
-                generate_vis_spec("multiple_line_chart", "Time", "Number of confirmed new cases",
+                generate_vis_spec("line_chart", "Time", "Number of confirmed new cases",
                                   "outbreak evolution",
                                   "Outbreak evolution at the patient's location"),
             ]
