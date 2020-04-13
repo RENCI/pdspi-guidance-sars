@@ -24,7 +24,7 @@ config = {
             "title": "Covid-19" }
     } ],
     "pluginParameterDefaults": [ {
-        "id": "pdspi-guidance-sars-triage:1",
+        "id": "pdspi-guidance-sars-triage:loc",
         "title": "Location (State)",
         "parameterDescription": "Please choose a state to indicate the location for which you would like to get triage guidance.",
         "parameterValue": { "value": "NC" },
@@ -160,7 +160,7 @@ guidance_input = {
     "ptid": "38",
     "timestamp": "2019-12-03T13:41:09.942+00:00",
     "pluginParameterValues": [ {
-        "id": "pdspi-guidance-sars-triage:1",
+        "id": "pdspi-guidance-sars-triage:loc",
         "title": "Location (State)",
         "parameterDescription": "Please choose a state to indicate the location for which you would like to get triage guidance.",
         "parameterValue": {"value": "NC"}
@@ -226,7 +226,7 @@ guidance_input_title_optional = {
     "ptid": "38",
     "timestamp": "2019-12-03T13:41:09.942+00:00",
     "pluginParameterValues": [ {
-        "id": "pdspi-guidance-sars-triage:1",
+        "id": "pdspi-guidance-sars-triage:loc",
         "title": "Location (State)",
         "parameterDescription": "Please choose a state to indicate the location for which you would like to get triage guidance.",
         "parameterValue": {"value": "NC"}
