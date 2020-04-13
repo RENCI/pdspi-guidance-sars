@@ -21,7 +21,7 @@ config = {
             "title": "Covid-19" }
     } ],
     "pluginParameterDefaults": [ {
-        "id": "pdspi-guidance-sars-triage:1",
+        "id": "pdspi-guidance-sars-triage:loc",
         "title": "Location (State)",
         "parameterDescription": "Please choose a state to indicate the location for which you would like to get triage guidance.",
         "parameterValue": { "value": "NC" },
@@ -133,67 +133,70 @@ def generate_vis_spec(typeid, x_axis_title, y_axis_title, chart_title, chart_des
         return {}
 
 
-def generate_vis_outputs(age=None, weight=None, bmi=None):
+def generate_vis_outputs(age=None, weight=None, bmi=None, location=None):
+    p_loc = location if location else "the patient's location"
     outputs = [
         {
             "id": "oid-1",
             "name": "Active cases",
-            "description": "Daily active cases along with model projection for the next week at the patient's location",
+            "description": "Daily active cases along with model projection for the next week at {}".format(p_loc),
             "data": generate_time_series_data(50),
             "specs": [
                 generate_vis_spec("line_chart", "Day", "Total number of active cases",
                                   "Active cases",
-                                  "Number of currently infected cases at the patient's location along with model "
-                                  "projection for the next week"),
+                                  "Number of currently infected cases at {} along with model projection for the "
+                                  "next week".format(p_loc)),
             ]
         },
         {
             "id": "oid-2",
             "name": "Case growth trend",
-            "description": "Daily cases growth trend signified by growth factor at the patient's location along with "
-                           "model projection for the next week.",
+            "description": "Daily cases growth trend signified by growth factor at {} along with "
+                           "model projection for the next week".format(p_loc),
             "data": generate_multi_time_series_data(50, 2, ['all age group', 'patient age group']),
             "specs": [
                 generate_vis_spec("multiple_line_chart", "Day", "Daily cases growth factor",
                                   "Daily cases growth trend",
-                                  "Growth factor of daily new cases at the patient's location is computed as every "
+                                  "Growth factor of daily new cases at {} is computed as every "
                                   "day's new cases divided by new cases on the previous day. A growth factor above 1 "
                                   "indicates an increase while a growth factor between 0 and 1 indicates a decline. "
-                                  "A growth factor constantly above 1 could signal exponential growth."),
+                                  "A growth factor constantly above 1 could signal exponential growth.".format(p_loc)),
             ]
         },
         {
             "id": "oid-3",
             "name": "Mortality",
-            "description": "Patient mortaility projection for the patient age group at the patient location",
+            "description": "Patient mortaility projection for the patient age group at {}".format(p_loc),
             "data": generate_scatter_plot_data(100),
             "specs": [
                 generate_vis_spec("scatter_plot", "Number of confirmed cases", "Number of deaths",
                                   "Projected patient mortality",
-                                  "patient mortality projected by model for the patient age group at the patient "
-                                  "location")
+                                  "patient mortality projected by model for the patient age group at {}".format(p_loc))
             ]
         },
         {
             "id": "oid-4",
             "name": "Risk factor by age",
-            "description": "Risk factor by age groups",
+            "description": "Risk factor by age groups at {}".format(p_loc),
             "data": generate_histogram_data(100),
             "specs": [
                 generate_vis_spec("histogram", "Age", "Risk factor", "Risk factor by age",
-                                  "Risk factor by age prejected by model")
+                                  "Risk factor by age prejected by model at {}".format(p_loc))
             ]
-        },
-        {
+        }
+    ]
+    if bmi:
+        outputs.append({
             "id": "oid-5",
             "name": "Risk factor by BMI",
-            "description": "Risk factor by BMI",
+            "description": "Risk factor by BMI at {}".format(p_loc),
             "data": generate_histogram_data(100),
             "specs": [
                 generate_vis_spec("histogram", "BMI", "Risk factor", "Risk factor by BMI",
-                                  "Risk factor by BMI prejected by model")
+                                  "Risk factor by BMI prejected by model at {}".format(p_loc))
             ]
-        },
+        })
+    outputs.append(
         {
             "id": "oid-6",
             "name": "Clinician to patient plot",
@@ -204,7 +207,8 @@ def generate_vis_outputs(age=None, weight=None, bmi=None):
                                   "Clinician to patient scatter plot",
                                   "Clinician to patient scatter plot at three nearby hospitals"),
             ]
-        },
+        })
+    outputs.append(
         {
             "id": "oid-7",
             "name": "PPE to clinician plot",
@@ -215,7 +219,9 @@ def generate_vis_outputs(age=None, weight=None, bmi=None):
                                   "PPE to clinician scatter plot",
                                   "PPE to clinician scatter plot at three nearby hospitals"),
             ]
-        },
+        }
+    )
+    outputs.append(
         {
             "id": "oid-8",
             "name": "ICU bed to patient plot",
@@ -227,7 +233,20 @@ def generate_vis_outputs(age=None, weight=None, bmi=None):
                                   "ICU bed to patient scatter plot at three nearby hospitals"),
             ]
         }
-    ]
+    )
+    outputs.append(
+        {
+            "id": "oid-9",
+            "name": "Ventilator to patient plot",
+            "description": "Ventilator to patient plot at three nearby hospitals",
+            "data": generate_multi_scatter_plot_data(50, 3, ['UNC hospital', 'Duke hospital', "WakeMed"]),
+            "specs": [
+                generate_vis_spec("multiple_scatter_plot", "Number of patients", "Number of ventilators",
+                                  "Ventilator to patient scatter plot",
+                                  "Ventilator to patient scatter plot at three nearby hospitals"),
+            ]
+        }
+    )
     return outputs
 
 
@@ -240,6 +259,10 @@ def get_guidance(body):
         return var.get(attr, next(filter(lambda rpv: rpv["id"] == var["id"], config["requiredPatientVariables"]))[attr])
 
     inputs = []
+    location = None
+    for var in body["pluginParameterValues"]:
+        if var['id'] == 'pdspi-guidance-sars-triage:loc':
+            location = var['parameterValue']['value']
     age = None
     weight = None
     bmi = None
@@ -263,6 +286,6 @@ def get_guidance(body):
         **guidance,
         "justification": {
             "inputs": inputs,
-            "outputs": generate_vis_outputs(age=age, weight=weight, bmi=bmi)
+            "outputs": generate_vis_outputs(age=age, weight=weight, bmi=bmi, location=location)
         }
     }
