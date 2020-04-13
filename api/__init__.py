@@ -77,7 +77,7 @@ guidance = {
             "title": "Recommendation",
             "summary": "The patient has high risk of infection and should be tested for SARS virus with a treatment plan",
             "detail": "some sort of optional GitHub Markdown details",
-            "indicator": "info",
+            "indicator": "critical",
             "source": {
                 "label": "Human-readable source label",
                 "url": "https://example.com",
@@ -90,15 +90,15 @@ guidance = {
                     "actions": [
                         {
                             "title": "Diagnosis and treatment",
-                            "id": "string",
+                            "id": "e1187895-ad57-4ff7-a1f1-ccf954b2fe46-action",
                             "type": "create",
-                            "description": "Create a triage plan for the patient",
-                            "resource": "TreatmentRequest"
+                            "description": "Create a triage plan for patient treatment",
+                            "resource": "ProcedureRequest"
                         }
                     ]
                 }
             ],
-            "selectionBehavior": "string",
+            "selectionBehavior": "1",
             "links": [
                 {
                     "label": "SMART Example App",
@@ -137,64 +137,94 @@ def generate_vis_outputs(age=None, weight=None, bmi=None):
     outputs = [
         {
             "id": "oid-1",
-            "name": "Daily confirmed new cases",
-            "description": "Daily confirmed new case outbreak evolution at the patient's location",
+            "name": "Active cases",
+            "description": "Daily active cases along with model projection for the next week at the patient's location",
             "data": generate_time_series_data(50),
             "specs": [
-                generate_vis_spec("line_chart", "Time", "Number of confirmed new cases",
-                                  "outbreak evolution",
-                                  "Outbreak evolution at the patient's location"),
+                generate_vis_spec("line_chart", "Day", "Total number of active cases",
+                                  "Active cases",
+                                  "Number of currently infected cases at the patient's location along with model "
+                                  "projection for the next week"),
             ]
         },
         {
             "id": "oid-2",
-            "name": "Patient to clinician ratios",
-            "description": "Patient to clinician ratios at four nearby hospitals",
-            "data": generate_multi_time_series_data(50, 4),
+            "name": "Case growth trend",
+            "description": "Daily cases growth trend signified by growth factor at the patient's location along with "
+                           "model projection for the next week.",
+            "data": generate_multi_time_series_data(50, 2, ['all age group', 'patient age group']),
             "specs": [
-                generate_vis_spec("multiple_line_chart", "Number of patients", "Number of clinician",
-                                  "Patient to clinician ratio",
-                                  "Patient to clinician ratio at four nearby hospitals"),
+                generate_vis_spec("multiple_line_chart", "Day", "Daily cases growth factor",
+                                  "Daily cases growth trend",
+                                  "Growth factor of daily new cases at the patient's location is computed as every "
+                                  "day's new cases divided by new cases on the previous day. A growth factor above 1 "
+                                  "indicates an increase while a growth factor between 0 and 1 indicates a decline. "
+                                  "A growth factor constantly above 1 could signal exponential growth."),
             ]
         },
         {
             "id": "oid-3",
-            "name": "PPE to clinician ratios",
-            "description": "PPE to clinician ratios at four nearby hospitals",
-            "data": generate_multi_time_series_data(50, 4),
+            "name": "Mortality",
+            "description": "Patient mortaility projection for the patient age group at the patient location",
+            "data": generate_scatter_plot_data(100),
             "specs": [
-                generate_vis_spec("multiple_line_chart", "Number of clinician", "Number of PPEs",
-                                  "PPE to clinician ratio",
-                                  "PPE to clinician ratio at four nearby hospitals"),
+                generate_vis_spec("scatter_plot", "Number of confirmed cases", "Number of deaths",
+                                  "Projected patient mortality",
+                                  "patient mortality projected by model for the patient age group at the patient "
+                                  "location")
             ]
         },
         {
             "id": "oid-4",
-            "name": "patient to ICU bed ratios",
-            "description": "Patients to ICU bed ratios at four nearby hospitals",
-            "data": generate_multi_time_series_data(50, 4),
+            "name": "Risk factor by age",
+            "description": "Risk factor by age groups",
+            "data": generate_histogram_data(100),
             "specs": [
-                generate_vis_spec("multiple_line_chart", "Number of patients", "Number of beds",
-                                  "Patient to ICU bed ratio",
-                                  "Patient to ICU bed ratio at four nearby hospitals"),
+                generate_vis_spec("histogram", "Age", "Risk factor", "Risk factor by age",
+                                  "Risk factor by age prejected by model")
             ]
         },
         {
             "id": "oid-5",
-            "name": "Patient mortality data",
-            "description": "Patient mortaility analysis in the age group",
-            "data": generate_scatter_plot_data(100),
+            "name": "Risk factor by BMI",
+            "description": "Risk factor by BMI",
+            "data": generate_histogram_data(100),
             "specs": [
-                generate_vis_spec("scatter_plot", "Confirmed cases", "Deaths", "Patient mortality", "Patient mortality analysis")
+                generate_vis_spec("histogram", "BMI", "Risk factor", "Risk factor by BMI",
+                                  "Risk factor by BMI prejected by model")
             ]
         },
         {
             "id": "oid-6",
-            "name": "Patients by age",
-            "description": "Patients by age informatoin",
-            "data": generate_histogram_data(100),
+            "name": "Clinician to patient plot",
+            "description": "Patient to clinician plot at three nearby hospitals",
+            "data": generate_multi_scatter_plot_data(50, 3, ['UNC hospital', 'Duke hospital', "WakeMed"]),
             "specs": [
-                generate_vis_spec("histogram", "Age", "Number of confirmed cases", "Histogram", "Confirmed cases by age")
+                generate_vis_spec("multiple_scatter_plot", "Number of patients", "Number of clinicians",
+                                  "Clinician to patient scatter plot",
+                                  "Clinician to patient scatter plot at three nearby hospitals"),
+            ]
+        },
+        {
+            "id": "oid-7",
+            "name": "PPE to clinician plot",
+            "description": "PPE to clinician plot at three nearby hospitals",
+            "data": generate_multi_scatter_plot_data(50, 3, ['UNC hospital', 'Duke hospital', "WakeMed"]),
+            "specs": [
+                generate_vis_spec("multiple_scatter_plot", "Number of clinicians", "Number of PPEs",
+                                  "PPE to clinician scatter plot",
+                                  "PPE to clinician scatter plot at three nearby hospitals"),
+            ]
+        },
+        {
+            "id": "oid-8",
+            "name": "ICU bed to patient plot",
+            "description": "ICU bed to patient plot at three nearby hospitals",
+            "data": generate_multi_scatter_plot_data(50, 3, ['UNC hospital', 'Duke hospital', "WakeMed"]),
+            "specs": [
+                generate_vis_spec("multiple_scatter_plot", "Number of patients", "Number of ICU beds",
+                                  "ICU bed to patient scatter plot",
+                                  "ICU bed to patient scatter plot at three nearby hospitals"),
             ]
         }
     ]
