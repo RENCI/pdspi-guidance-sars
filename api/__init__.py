@@ -142,7 +142,7 @@ def generate_vis_outputs(age=None, weight=None, bmi=None, location=None):
             "description": "Daily active cases along with model projection for the next week at {}".format(p_loc),
             "data": generate_time_series_data(50),
             "specs": [
-                generate_vis_spec("line_chart", "Day", "Total number of active cases",
+                generate_vis_spec("line_chart", "Date", "Total number of active cases",
                                   "Active cases",
                                   "Number of currently infected cases at {} along with model projection for the "
                                   "next week".format(p_loc)),
@@ -155,7 +155,7 @@ def generate_vis_outputs(age=None, weight=None, bmi=None, location=None):
                            "model projection for the next week".format(p_loc),
             "data": generate_multi_time_series_data(50, 2, ['all age group', 'patient age group']),
             "specs": [
-                generate_vis_spec("multiple_line_chart", "Day", "Daily cases growth factor",
+                generate_vis_spec("multiple_line_chart", "Date", "Daily cases growth factor",
                                   "Daily cases growth trend",
                                   "Growth factor of daily new cases at {} is computed as every "
                                   "day's new cases divided by new cases on the previous day. A growth factor above 1 "
