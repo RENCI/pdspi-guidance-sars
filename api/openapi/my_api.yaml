@@ -1,7 +1,7 @@
 openapi: 3.0.0
 # Added by API Auto Mocking Plugin
 info:
-  description: SARS Triage guidance plugin
+  description: SARS guidance plugin
   version: "4"
   title: Guidance plugin
   contact:
@@ -23,8 +23,8 @@ paths:
                 $ref: '#/components/schemas/Config'
               example:
                 {
-                    "title": "SARS Triage guidance",
-                    "piid": "pdspi-sars-triage",
+                    "title": "SARS guidance",
+                    "piid": "pdspi-guidance-sars",
                     "pluginType": "g",
                     "pluginSelectors": [ {
                         "title": "Type",
@@ -34,9 +34,9 @@ paths:
                             "title": "Covid-19" }
                     } ],
                     "pluginParameterDefaults": [ {
-                        "id": "pdspi-guidance-sars-triage:loc",
-                        "title": "Location (State)",
-                        "parameterDescription": "Please choose a state to indicate the location for which you would like to get triage guidance.",
+                        "id": "pdspi-guidance-sars:loc",
+                        "title": "Hospital location (State)",
+                        "parameterDescription": "Please choose a state to indicate the hospital location for which you would like to get triage guidance.",
                         "parameterValue": { "value": "NC" },
                         "legalValues": {
                             "type": "string",
@@ -112,10 +112,10 @@ paths:
                       $ref: '#/components/schemas/Message'
                     example: [  {
                       "timestamp": "2019-09-20T00:00:01Z",
-                      "event": "Not a guidance plugin type, [m] for [pdspi-guidance-sars-triage].",
+                      "event": "Not a guidance plugin type, [m] for [pdspi-guidance-sars].",
                       "source": "admin user",
                       "level": 1,
-                      "action": "Changed plugin from [m] type to 'g'[pdspi-guidance-sars-triage] and returning config as-is otherwise"
+                      "action": "Changed plugin from [m] type to 'g'[pdspi-guidance-sars] and returning config as-is otherwise"
                       } ]
                   configs:
                     $ref: '#/components/schemas/Config'
@@ -129,13 +129,13 @@ paths:
             schema:
               $ref: '#/components/schemas/GuidanceInputs'
             example:
-              { "piid": "pdspi-guidance-sars-triage",
+              { "piid": "pdspi-guidance-sars",
               "ptid": "38",
               "timestamp": "2020-04-03T13:41:09.942+00:00",
               "pluginParameterValues": [ {
-                  "id": "pdspi-guidance-sars-triage:loc",
-                  "title": "Location (State)",
-                  "parameterDescription": "Please choose a state to indicate the location for which you would like to get triage guidance.",
+                  "id": "pdspi-guidance-sars:loc",
+                  "title": "Hospital location (State)",
+                  "parameterDescription": "Please choose a state to indicate the hospital location for which you would like to get triage guidance.",
                   "parameterValue": { "value": "NC" }
                 } ],
               "userSuppliedPatientVariables": [ {
@@ -216,12 +216,12 @@ paths:
                       "event": "Missing patient variable[LOINC:30525-0]",
                       "source": "pdspi-mapper-example",
                       "level": 3,
-                      "action": "Called plugin with missing values [pdspi-guidance-sars-triage]"
+                      "action": "Called plugin with missing values [pdspi-guidance-sars]"
                       },
                       {
                       "timestamp": "2019-09-20T00:00:02Z",
                       "event": "Missing patient variable[LOINC:30525-0]",
-                      "source": "pdspi-guidance-sars-triage",
+                      "source": "pdspi-guidance-sars",
                       "level": 3,
                       "action": "Set LOINC:30525-0='85' for most conservative guidance"
                       }]
@@ -241,7 +241,7 @@ paths:
                     example: [  {
                       "timestamp": "2019-09-20T00:00:01Z",
                       "event": "Guidance plugin results did not pass JSON validator:[{\"valuE\": \"5\"}]",
-                      "source": "pdspi-guidance-sars-triage",
+                      "source": "pdspi-guidance-sars",
                       "level": 3,
                       "action": "Correction attempted: 'valuE' to 'value'."
                       }]
@@ -361,7 +361,7 @@ components:
         id:
           type: string
           description: "The id for one of the parameters used by the plugin in question. Parameters are completely defined by the plugin and need not be interchangable with other plugins. The client will have no prior knowledge for plugin parameters."
-          example: "pdspi-guidance-sars-triage:1"
+          example: "pdspi-guidance-sars:1"
         title: 
           type: string
           description: "A non-standardized, human-readable string to describe the id. May be implemented by the PDS to aid in debugging, clients should not depend on this value."
@@ -430,7 +430,7 @@ components:
       properties:
         piid:
           type: string
-          example: "pdspi-guidance-sars-triage"
+          example: "pdspi-guidance-sars"
           description: "Uniquely identifies the enabled and installed plugin to use for retrieving guidance"
         txid:
           description: "A unique id that the client is ue to track this transaction. If specified, it will be returned in the Guidance, if not specified, a unique ID will be created."  

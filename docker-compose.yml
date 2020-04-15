@@ -1,7 +1,7 @@
 version: '3.4'
 services:
   
-  pdspi-guidance-sars-triage:
+  pdspi-guidance-sars:
     build:
       context: .
     restart: always

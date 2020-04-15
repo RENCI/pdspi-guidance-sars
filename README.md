@@ -1,6 +1,6 @@
-[![Build Status](https://travis-ci.com/RENCI/pdspi-guidance-sars-triage.svg?branch=master)](https://travis-ci.com/RENCI/pdspi-guidance-sars-triage)
+[![Build Status](https://travis-ci.com/RENCI/pdspi-guidance-sars.svg?branch=master)](https://travis-ci.com/RENCI/pdspi-guidance-sars)
 
-# pdspi-guidance-sars-triage
+# pdspi-guidance-sars
 
 ### What does this plug-in do?
 

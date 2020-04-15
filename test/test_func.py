@@ -13,8 +13,8 @@ json_post_headers = {
 
 
 config = {
-    "title": "SARS Triage guidance",
-    "piid": "pdspi-sars-triage",
+    "title": "SARS guidance",
+    "piid": "pdspi-guidance-sars",
     "pluginType": "g",
     "pluginSelectors": [ {
         "title": "Type",
@@ -24,13 +24,14 @@ config = {
             "title": "Covid-19" }
     } ],
     "pluginParameterDefaults": [ {
-        "id": "pdspi-guidance-sars-triage:loc",
-        "title": "Location (State)",
-        "parameterDescription": "Please choose a state to indicate the location for which you would like to get triage guidance.",
-        "parameterValue": { "value": "NC" },
+        "id": "pdspi-guidance-sars:loc",
+        "title": "Hospital location (State)",
+        "parameterDescription": "Please choose a state to indicate the hospital location for which you would like to "
+                                "get triage guidance.",
+        "parameterValue": {"value": "NC"},
         "legalValues": {
             "type": "string",
-            "enum": [ "NC", "NY", "PA", "SC", "VA"] }
+            "enum": ["NC", "NY", "PA", "SC", "VA"]}
     } ],
     "requiredPatientVariables": [ {
         "id": "LOINC:30525-0",
@@ -72,8 +73,8 @@ config = {
 
 
 guidance = {
-    "piid": "pdspi-guidance-sars-triage",
-    "title": "SARS triage guidance",
+    "piid": "pdspi-guidance-sars",
+    "title": "SARS guidance",
     "txid": "38-1",
     "justification": {
         "input": [
@@ -156,13 +157,14 @@ guidance = {
 
 
 guidance_input = {
-    "piid": "pdspi-guidance-sars-triage",
+    "piid": "pdspi-guidance-sars",
     "ptid": "38",
     "timestamp": "2019-12-03T13:41:09.942+00:00",
     "pluginParameterValues": [ {
-        "id": "pdspi-guidance-sars-triage:loc",
-        "title": "Location (State)",
-        "parameterDescription": "Please choose a state to indicate the location for which you would like to get triage guidance.",
+        "id": "pdspi-guidance-sars:loc",
+        "title": "Hospital location (State)",
+        "parameterDescription": "Please choose a state to indicate the hospital location for which you would like "
+                                "to get triage guidance.",
         "parameterValue": {"value": "NC"}
     } ],
     "userSuppliedPatientVariables": [ {
@@ -222,13 +224,14 @@ guidance_input = {
 
 
 guidance_input_title_optional = {
-    "piid": "pdspi-guidance-sars-triage",
+    "piid": "pdspi-guidance-sars",
     "ptid": "38",
     "timestamp": "2019-12-03T13:41:09.942+00:00",
     "pluginParameterValues": [ {
-        "id": "pdspi-guidance-sars-triage:loc",
-        "title": "Location (State)",
-        "parameterDescription": "Please choose a state to indicate the location for which you would like to get triage guidance.",
+        "id": "pdspi-guidance-sars:loc",
+        "title": "Hospital location (State)",
+        "parameterDescription": "Please choose a state to indicate the hospital location for which you would like "
+                                "to get triage guidance.",
         "parameterValue": {"value": "NC"}
     } ],
     "userSuppliedPatientVariables": [ {
@@ -252,7 +255,7 @@ guidance_input_title_optional = {
 
 
 def test_guidance():
-    resp = requests.post("http://pdspi-guidance-sars-triage:8080/guidance", headers=json_post_headers, json=guidance_input)
+    resp = requests.post("http://pdspi-guidance-sars:8080/guidance", headers=json_post_headers, json=guidance_input)
     resp_output = resp.json()
     assert resp.status_code == 200
     assert "piid" in resp_output
@@ -264,7 +267,7 @@ def test_guidance():
 
 
 def test_guidance_title_optional():
-    resp = requests.post("http://pdspi-guidance-sars-triage:8080/guidance", headers=json_post_headers, json=guidance_input_title_optional)
+    resp = requests.post("http://pdspi-guidance-sars:8080/guidance", headers=json_post_headers, json=guidance_input_title_optional)
     resp_output = resp.json()
     assert resp.status_code == 200
     assert "piid" in resp_output
@@ -276,13 +279,13 @@ def test_guidance_title_optional():
 
 
 def test_config():
-    resp = requests.get("http://pdspi-guidance-sars-triage:8080/config", headers=json_headers)
+    resp = requests.get("http://pdspi-guidance-sars:8080/config", headers=json_headers)
 
     assert resp.status_code == 200
     assert resp.json() == config
 
     
 def test_ui():
-    resp = requests.get("http://pdspi-guidance-sars-triage:8080/ui")
+    resp = requests.get("http://pdspi-guidance-sars:8080/ui")
 
     assert resp.status_code == 200

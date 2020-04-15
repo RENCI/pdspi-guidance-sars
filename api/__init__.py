@@ -10,8 +10,8 @@ pds_port = os.getenv("PDS_PORT", "8080")
 pds_version = os.getenv("PDS_VERSION", "v1")
 
 config = {
-    "title": "SARS Triage guidance",
-    "piid": "pdspi-sars-triage",
+    "title": "SARS guidance",
+    "piid": "pdspi-guidance-sars",
     "pluginType": "g",
     "pluginSelectors": [ {
         "title": "Type",
@@ -21,9 +21,9 @@ config = {
             "title": "Covid-19" }
     } ],
     "pluginParameterDefaults": [ {
-        "id": "pdspi-guidance-sars-triage:loc",
-        "title": "Location (State)",
-        "parameterDescription": "Please choose a state to indicate the location for which you would like to get triage guidance.",
+        "id": "pdspi-guidance-sars:loc",
+        "title": "Hospital location (State)",
+        "parameterDescription": "Please choose a state to indicate the hospital location for which you would like to get triage guidance.",
         "parameterValue": { "value": "NC" },
         "legalValues": {
             "type": "string",
@@ -68,8 +68,8 @@ config = {
 }
 
 guidance = {
-    "piid": "pdspi-guidance-sars-triage",
-    "title": "SARS triage guidance",
+    "piid": "pdspi-guidance-sars",
+    "title": "SARS guidance",
     "txid": "38-1",
     "cards": [
         {
@@ -261,7 +261,7 @@ def get_guidance(body):
     inputs = []
     location = None
     for var in body["pluginParameterValues"]:
-        if var['id'] == 'pdspi-guidance-sars-triage:loc':
+        if var['id'] == 'pdspi-guidance-sars:loc':
             location = var['parameterValue']['value']
     age = None
     weight = None
