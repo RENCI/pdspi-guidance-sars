@@ -46,37 +46,37 @@ paths:
                         "id": "LOINC:30525-0",
                         "title": "Age",
                         "legalValues": { "type": "number", "minimum": "0" },
-                        "why": "Age is used to assess patient risk for Covid-19."
+                        "why": "Age is used to assess patient risk for SARS."
                     },
                     {
                         "id": "LOINC:21840-4",
                         "title": "Sex",
                         "legalValues": { "type": "string" },
-                        "why": "Sex is used to assess patient risk for Covid-19."
+                        "why": "Sex is used to assess patient risk for SARS."
                     },
                     {
                         "id": "LOINC:39156-5",
                         "title": "BMI",
                         "legalValues": { "type": "number", "minimum": "0" },
-                        "why": "BMI is used to assess patient risk for Covid-19."
+                        "why": "BMI is used to assess patient risk for SARS."
                     },
                     {
                       "id": "LOINC:45701-0",
                       "title": "Fever",
                       "legalValues": { "type": "boolean"},
-                      "why": "Fever is one major symptom of Covid-19"
+                      "why": "Fever is one major symptom of SARS"
                     },
                     {
                       "id": "LOINC:64145-6",
                       "title": "Cough",
                       "legalValues": { "type": "boolean"},
-                      "why": "Cough is one major symptom of Covid-19"
+                      "why": "Cough is one major symptom of SARS"
                     },
                     {
                       "id": "LOINC:54564-0",
                       "title": "Shortness of breath",
                       "legalValues": { "type": "boolean"},
-                      "why": "Shortness of breath is one major symptom of Covid-19"
+                      "why": "Shortness of breath is one major symptom of SARS"
                     } ]
                 }
         '400':
@@ -320,11 +320,11 @@ components:
         title:
           type: string
           description: "Meaningful name for this plugin"
-          example: "Aminoglycoside dosing guidance"
+          example: "SARS guidance"
         piid:
           type: string
           description: "A string, unique to this deployment, used to identify this plugin in realtime"
-          example: "pdspi-aminoglycoside-nomogram"
+          example: "pdspi-guidance-sars"
         pluginType:
           type: string
           enum: [e,g,m,mD,f,fD]
@@ -365,19 +365,19 @@ components:
         title: 
           type: string
           description: "A non-standardized, human-readable string to describe the id. May be implemented by the PDS to aid in debugging, clients should not depend on this value."
-          example: "Extended interval nomogram"
+          example: "Hospital location"
         parameterDescription:
           type: string
           description: "Description provided by the plugin. The plugin, not the client, is therefore responsible for converting the descriptions to the appropriate language based on internationalization and personalization preferences."
-          example: "This calculator uses one of four extended-interval nomograms. Please choose one nomogram."
+          example: "Please choose a state to indicate the hospital location for which you would like to get triage guidance."
         parameterValue:
           type: object
           description: "The actual value of the parameter. NOTE: This value is actually an object type, but we use 'string' here to overcome a shortcoming of the swagger ui. This design choice was made in order to prioritize a better interactive documentation experience for the API user."
-          example: {"value": "Hartford"}
+          example: {"value": "NC"}
         legalValues:
           type: string
           description: "The 'legalValues' will always be present in the '/config' endpoint response and need not be provided to or from the client in the '/guidance' endpoint call. Use the JSON schema, https://json-schema.org/draft/2019-09/json-schema-validation.html. For example, { type: 'string', 'enum': [ 'Gentamicin', 'Amikacin' ] } to define an enumeration,  { 'type': 'number' } for a float, and { 'type': 'number', 'minimum': '0' } for a positive number, and { 'type': 'integer' } for an integer. NOTE: This value is actually an object type, but we use 'string' here to overcome a shortcoming of the swagger ui. This design choice was made in order to prioritize a better interactive documentation experience for the API user. "
-          example: { "type": "string", "enum": ["Hartford", "Urban-Craig", "Conventional A", "Conventional B"] }
+          example: { "type": "string", "enum": ["NC", "SC", "VA", "NY"] }
     RequiredPatientVariable:
       type: object
       required:
@@ -400,7 +400,7 @@ components:
         why:
           type: string
           description: "Provides the client with a human-readable, non-standard justification for why the plugin needs this particular variable. This can be rendered by the client to provide the end-user with rationale for the patient values, but does not address how the value was computed."
-          example: "Age is used to calculate the creatinine clearance. Dosing is lower for geriatric patient and contraindicated for pediatric patients"
+          example: "Age is used to assess patient risk for SARS"
     Selector:
       description: "Used for selecting plugins"
       type: object
