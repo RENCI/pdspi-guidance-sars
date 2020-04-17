@@ -24,14 +24,22 @@ paths:
               example:
                 {
                     "title": "SARS guidance",
-                    "piid": "pdspi-guidance-sars",
+                    "piid": "pdspi-guidance-sars-treatment",
                     "pluginType": "g",
                     "pluginSelectors": [ {
-                        "title": "Type",
-                        "id": "PDS:sars-covid-19",
+                        "title": "SARS",
+                        "id": "PDS:sars",
                         "selectorValue": {
-                            "value": "covid-19",
-                            "title": "Covid-19" }
+                            "value": "PDS:sars:treatment",
+                            "title": "Treatment"
+                        }
+                    },
+                    {
+                        "title": "SARS",
+                        "id": "PDS:sars",
+                        "selectorValue": {
+                            "value": "PDS:sars:resource",
+                            "title": "Resource" }
                     } ],
                     "pluginParameterDefaults": [ {
                         "id": "pdspi-guidance-sars:loc",
@@ -129,7 +137,7 @@ paths:
             schema:
               $ref: '#/components/schemas/GuidanceInputs'
             example:
-              { "piid": "pdspi-guidance-sars",
+              { "piid": "pdspi-guidance-sars-treatment",
               "ptid": "38",
               "timestamp": "2020-04-03T13:41:09.942+00:00",
               "pluginParameterValues": [ {
@@ -324,7 +332,7 @@ components:
         piid:
           type: string
           description: "A string, unique to this deployment, used to identify this plugin in realtime"
-          example: "pdspi-guidance-sars"
+          example: "pdspi-guidance-sars-treatment"
         pluginType:
           type: string
           enum: [e,g,m,mD,f,fD]

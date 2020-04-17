@@ -9,17 +9,64 @@ pds_host = os.getenv("PDS_HOST", "localhost")
 pds_port = os.getenv("PDS_PORT", "8080")
 pds_version = os.getenv("PDS_VERSION", "v1")
 
-config = {
-    "title": "SARS guidance",
-    "piid": "pdspi-guidance-sars",
-    "pluginType": "g",
-    "pluginSelectors": [ {
-        "title": "Type",
-        "id": "PDS:sars-covid-19",
+selector_val = os.getenv("SELECTOR_VALUE", "treatment")
+selector_config = {
+    "title": "SARS",
+    "id": "PDS:sars",
+    "selectorValue": {
+        "value": "PDS:sars:treatment",
+        "title": "Treatment" }
+}
+summary_card = "The patient has high risk of infection and should be tested for SARS virus with a treatment plan"
+suggestion_card = {
+    "uuid": "e1187895-ad57-4ff7-a1f1-ccf954b2fe46",
+    "label": "High risk patient",
+    "actions": [
+        {
+            "title": "Diagnosis and treatment",
+            "id": "e1187895-ad57-4ff7-a1f1-ccf954b2fe46-action",
+            "type": "create",
+            "description": "Create a triage plan for patient treatment",
+            "resource": "ProcedureRequest"
+        }
+    ]
+}
+
+piid = "pdspi-guidance-sars-treatment"
+pi_title = "SARS guidance for patient treatment"
+
+if selector_val == 'resource':
+    piid = "pdspi-guidance-sars-resource"
+    pi_title = "SARS guidance for resource management"
+    selector_config = {
+        "title": "SARS",
+        "id": "PDS:sars",
         "selectorValue": {
-            "value": "covid-19",
-            "title": "Covid-19" }
-    } ],
+            "value": "PDS:sars:resource",
+            "title": "Resource"}
+    }
+    summary_card = "70% of clinicians should change their PPE."
+    suggestion_card = {
+        "uuid": "e1187895-ad57-4ff7-a1f1-ccf954b2fe46",
+        "label": "Change PPE",
+        "actions": [
+            {
+                "title": "Resource management",
+                "id": "e1187895-ad57-4ff7-a1f1-ccf954b2fe46-action",
+                "type": "create",
+                "description": "Create a resource management plan for clinicians to change PPE",
+                "resource": "ProcedureRequest"
+            }
+        ]
+    }
+
+config = {
+    "title": pi_title,
+    "piid": piid,
+    "pluginType": "g",
+    "pluginSelectors": [
+        selector_config
+    ],
     "pluginParameterDefaults": [ {
         "id": "pdspi-guidance-sars:loc",
         "title": "Hospital location (State)",
@@ -33,49 +80,49 @@ config = {
         "id": "LOINC:30525-0",
         "title": "Age",
         "legalValues": { "type": "number", "minimum": "0" },
-        "why": "Age is used to assess patient risk for Covid-19."
+        "why": "Age is used to assess patient risk for SARS"
     },
     {
         "id": "LOINC:21840-4",
         "title": "Sex",
         "legalValues": { "type": "string" },
-        "why": "Sex is used to assess patient risk for Covid-19."
+        "why": "Sex is used to assess patient risk for SARS"
     },
     {
         "id": "LOINC:39156-5",
         "title": "BMI",
         "legalValues": { "type": "number", "minimum": "0" },
-        "why": "BMI is used to assess patient risk for Covid-19."
+        "why": "BMI is used to assess patient risk for SARS"
     },
     {
       "id": "LOINC:45701-0",
       "title": "Fever",
       "legalValues": { "type": "boolean"},
-      "why": "Fever is one major symptom of Covid-19"
+      "why": "Fever is one major symptom of SARS"
     },
     {
       "id": "LOINC:64145-6",
       "title": "Cough",
       "legalValues": { "type": "boolean"},
-      "why": "Cough is one major symptom of Covid-19"
+      "why": "Cough is one major symptom of SARS"
     },
     {
       "id": "LOINC:54564-0",
       "title": "Shortness of breath",
       "legalValues": { "type": "boolean"},
-      "why": "Shortness of breath is one major symptom of Covid-19"
+      "why": "Shortness of breath is one major symptom of SARS"
     } ]
 }
 
 guidance = {
-    "piid": "pdspi-guidance-sars",
+    "piid": piid,
     "title": "SARS guidance",
     "txid": "38-1",
     "cards": [
         {
             "id": "string",
             "title": "Recommendation",
-            "summary": "The patient has high risk of infection and should be tested for SARS virus with a treatment plan",
+            "summary": summary_card,
             "detail": "some sort of optional GitHub Markdown details",
             "indicator": "critical",
             "source": {
@@ -84,19 +131,7 @@ guidance = {
                 "icon": "https://example.com/img/icon-100px.png"
             },
             "suggestions": [
-                {
-                    "uuid": "e1187895-ad57-4ff7-a1f1-ccf954b2fe46",
-                    "label": "High risk patient",
-                    "actions": [
-                        {
-                            "title": "Diagnosis and treatment",
-                            "id": "e1187895-ad57-4ff7-a1f1-ccf954b2fe46-action",
-                            "type": "create",
-                            "description": "Create a triage plan for patient treatment",
-                            "resource": "ProcedureRequest"
-                        }
-                    ]
-                }
+                suggestion_card
             ],
             "selectionBehavior": "1",
             "links": [
@@ -162,19 +197,21 @@ def generate_vis_outputs(age=None, weight=None, bmi=None, location=None):
                                   "indicates an increase while a growth factor between 0 and 1 indicates a decline. "
                                   "A growth factor constantly above 1 could signal exponential growth.".format(p_loc)),
             ]
-        },
-        {
+        }
+    ]
+    if selector_val == 'treatment':
+        outputs.append({
             "id": "oid-3",
             "name": "Mortality",
-            "description": "Patient mortaility projection for the patient age group at {}".format(p_loc),
+            "description": "Patient mortality projection for the patient age group at {}".format(p_loc),
             "data": generate_scatter_plot_data(100),
             "specs": [
                 generate_vis_spec("scatter_plot", "Number of confirmed cases", "Number of deaths",
                                   "Projected patient mortality",
                                   "patient mortality projected by model for the patient age group at {}".format(p_loc))
             ]
-        },
-        {
+        })
+        outputs.append({
             "id": "oid-4",
             "name": "Risk factor by age",
             "description": "Risk factor by age groups at {}".format(p_loc),
@@ -183,70 +220,71 @@ def generate_vis_outputs(age=None, weight=None, bmi=None, location=None):
                 generate_vis_spec("histogram", "Age", "Risk factor", "Risk factor by age",
                                   "Risk factor by age prejected by model at {}".format(p_loc))
             ]
-        }
-    ]
-    if bmi:
-        outputs.append({
-            "id": "oid-5",
-            "name": "Risk factor by BMI",
-            "description": "Risk factor by BMI at {}".format(p_loc),
-            "data": generate_histogram_data(100),
-            "specs": [
-                generate_vis_spec("histogram", "BMI", "Risk factor", "Risk factor by BMI",
-                                  "Risk factor by BMI prejected by model at {}".format(p_loc))
-            ]
         })
-    outputs.append(
-        {
-            "id": "oid-6",
-            "name": "Clinician to patient plot",
-            "description": "Patient to clinician plot at three nearby hospitals",
-            "data": generate_multi_scatter_plot_data(50, 3, ['UNC hospital', 'Duke hospital', "WakeMed"]),
-            "specs": [
-                generate_vis_spec("multiple_scatter_plot", "Number of patients", "Number of clinicians",
-                                  "Clinician to patient scatter plot",
-                                  "Clinician to patient scatter plot at three nearby hospitals"),
-            ]
-        })
-    outputs.append(
-        {
-            "id": "oid-7",
-            "name": "PPE to clinician plot",
-            "description": "PPE to clinician plot at three nearby hospitals",
-            "data": generate_multi_scatter_plot_data(50, 3, ['UNC hospital', 'Duke hospital', "WakeMed"]),
-            "specs": [
-                generate_vis_spec("multiple_scatter_plot", "Number of clinicians", "Number of PPEs",
-                                  "PPE to clinician scatter plot",
-                                  "PPE to clinician scatter plot at three nearby hospitals"),
-            ]
-        }
-    )
-    outputs.append(
-        {
-            "id": "oid-8",
-            "name": "ICU bed to patient plot",
-            "description": "ICU bed to patient plot at three nearby hospitals",
-            "data": generate_multi_scatter_plot_data(50, 3, ['UNC hospital', 'Duke hospital', "WakeMed"]),
-            "specs": [
-                generate_vis_spec("multiple_scatter_plot", "Number of patients", "Number of ICU beds",
-                                  "ICU bed to patient scatter plot",
-                                  "ICU bed to patient scatter plot at three nearby hospitals"),
-            ]
-        }
-    )
-    outputs.append(
-        {
-            "id": "oid-9",
-            "name": "Ventilator to patient plot",
-            "description": "Ventilator to patient plot at three nearby hospitals",
-            "data": generate_multi_scatter_plot_data(50, 3, ['UNC hospital', 'Duke hospital', "WakeMed"]),
-            "specs": [
-                generate_vis_spec("multiple_scatter_plot", "Number of patients", "Number of ventilators",
-                                  "Ventilator to patient scatter plot",
-                                  "Ventilator to patient scatter plot at three nearby hospitals"),
-            ]
-        }
-    )
+        if bmi:
+            outputs.append({
+                "id": "oid-5",
+                "name": "Risk factor by BMI",
+                "description": "Risk factor by BMI at {}".format(p_loc),
+                "data": generate_histogram_data(100),
+                "specs": [
+                    generate_vis_spec("histogram", "BMI", "Risk factor", "Risk factor by BMI",
+                                      "Risk factor by BMI prejected by model at {}".format(p_loc))
+                ]
+            })
+    else:
+        # resource management
+        outputs.append(
+            {
+                "id": "oid-6",
+                "name": "Clinician to patient plot",
+                "description": "Patient to clinician plot at three nearby hospitals",
+                "data": generate_multi_scatter_plot_data(50, 3, ['UNC hospital', 'Duke hospital', "WakeMed"]),
+                "specs": [
+                    generate_vis_spec("multiple_scatter_plot", "Number of patients", "Number of clinicians",
+                                      "Clinician to patient scatter plot",
+                                      "Clinician to patient scatter plot at three nearby hospitals"),
+                ]
+            })
+        outputs.append(
+            {
+                "id": "oid-7",
+                "name": "PPE to clinician plot",
+                "description": "PPE to clinician plot at three nearby hospitals",
+                "data": generate_multi_scatter_plot_data(50, 3, ['UNC hospital', 'Duke hospital', "WakeMed"]),
+                "specs": [
+                    generate_vis_spec("multiple_scatter_plot", "Number of clinicians", "Number of PPEs",
+                                      "PPE to clinician scatter plot",
+                                      "PPE to clinician scatter plot at three nearby hospitals"),
+                ]
+            }
+        )
+        outputs.append(
+            {
+                "id": "oid-8",
+                "name": "ICU bed to patient plot",
+                "description": "ICU bed to patient plot at three nearby hospitals",
+                "data": generate_multi_scatter_plot_data(50, 3, ['UNC hospital', 'Duke hospital', "WakeMed"]),
+                "specs": [
+                    generate_vis_spec("multiple_scatter_plot", "Number of patients", "Number of ICU beds",
+                                      "ICU bed to patient scatter plot",
+                                      "ICU bed to patient scatter plot at three nearby hospitals"),
+                ]
+            }
+        )
+        outputs.append(
+            {
+                "id": "oid-9",
+                "name": "Ventilator to patient plot",
+                "description": "Ventilator to patient plot at three nearby hospitals",
+                "data": generate_multi_scatter_plot_data(50, 3, ['UNC hospital', 'Duke hospital', "WakeMed"]),
+                "specs": [
+                    generate_vis_spec("multiple_scatter_plot", "Number of patients", "Number of ventilators",
+                                      "Ventilator to patient scatter plot",
+                                      "Ventilator to patient scatter plot at three nearby hospitals"),
+                ]
+            }
+        )
     return outputs
 
 

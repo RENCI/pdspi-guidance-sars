@@ -13,16 +13,16 @@ json_post_headers = {
 
 
 config = {
-    "title": "SARS guidance",
-    "piid": "pdspi-guidance-sars",
+    "title": "SARS guidance for patient treatment",
+    "piid": "pdspi-guidance-sars-treatment",
     "pluginType": "g",
     "pluginSelectors": [ {
-        "title": "Type",
-        "id": "PDS:sars-covid-19",
+        "title": "SARS",
+        "id": "PDS:sars",
         "selectorValue": {
-            "value": "covid-19",
-            "title": "Covid-19" }
-    } ],
+            "value": "PDS:sars:treatment",
+            "title": "Treatment" }
+    }],
     "pluginParameterDefaults": [ {
         "id": "pdspi-guidance-sars:loc",
         "title": "Hospital location (State)",
@@ -37,44 +37,44 @@ config = {
         "id": "LOINC:30525-0",
         "title": "Age",
         "legalValues": { "type": "number", "minimum": "0" },
-        "why": "Age is used to assess patient risk for Covid-19."
+        "why": "Age is used to assess patient risk for SARS"
     },
     {
         "id": "LOINC:21840-4",
         "title": "Sex",
         "legalValues": { "type": "string" },
-        "why": "Sex is used to assess patient risk for Covid-19."
+        "why": "Sex is used to assess patient risk for SARS"
     },
     {
         "id": "LOINC:39156-5",
         "title": "BMI",
         "legalValues": { "type": "number", "minimum": "0" },
-        "why": "BMI is used to assess patient risk for Covid-19."
+        "why": "BMI is used to assess patient risk for SARS"
     },
     {
       "id": "LOINC:45701-0",
       "title": "Fever",
       "legalValues": { "type": "boolean"},
-      "why": "Fever is one major symptom of Covid-19"
+      "why": "Fever is one major symptom of SARS"
     },
     {
       "id": "LOINC:64145-6",
       "title": "Cough",
       "legalValues": { "type": "boolean"},
-      "why": "Cough is one major symptom of Covid-19"
+      "why": "Cough is one major symptom of SARS"
     },
     {
       "id": "LOINC:54564-0",
       "title": "Shortness of breath",
       "legalValues": { "type": "boolean"},
-      "why": "Shortness of breath is one major symptom of Covid-19"
+      "why": "Shortness of breath is one major symptom of SARS"
     } ]
 }
 
 
 guidance = {
-    "piid": "pdspi-guidance-sars",
-    "title": "SARS guidance",
+    "piid": "pdspi-guidance-sars-treatment",
+    "title": "SARS guidance for patient treatment",
     "txid": "38-1",
     "justification": {
         "input": [
@@ -157,7 +157,7 @@ guidance = {
 
 
 guidance_input = {
-    "piid": "pdspi-guidance-sars",
+    "piid": "pdspi-guidance-sars-treatment",
     "ptid": "38",
     "timestamp": "2019-12-03T13:41:09.942+00:00",
     "pluginParameterValues": [ {
@@ -224,7 +224,7 @@ guidance_input = {
 
 
 guidance_input_title_optional = {
-    "piid": "pdspi-guidance-sars",
+    "piid": "pdspi-guidance-sars-treatment",
     "ptid": "38",
     "timestamp": "2019-12-03T13:41:09.942+00:00",
     "pluginParameterValues": [ {
