@@ -1,8 +1,8 @@
 import os
 import requests
 
-from api.utils import generate_time_series_data, generate_multi_time_series_data, generate_scatter_plot_data, \
-    generate_multi_scatter_plot_data, generate_histogram_data, generate_dosing_data
+from api.utils import generate_time_series_exponential_growth_data, generate_multi_time_series_exponential_growth_data, \
+    generate_scatter_plot_data, generate_multi_scatter_plot_data, generate_histogram_data
 
 
 pds_host = os.getenv("PDS_HOST", "localhost")
@@ -17,7 +17,7 @@ selector_config = {
         "value": "PDS:sars:treatment",
         "title": "Treatment" }
 }
-summary_card = "The patient has high risk of infection and should be tested for SARS virus with a treatment plan"
+summary_card = "The patient has high risk of infection. Recommend to test the patient for SARS virus with a treatment plan."
 suggestion_card = {
     "uuid": "e1187895-ad57-4ff7-a1f1-ccf954b2fe46",
     "label": "High risk patient",
@@ -26,7 +26,7 @@ suggestion_card = {
             "title": "Diagnosis and treatment",
             "id": "e1187895-ad57-4ff7-a1f1-ccf954b2fe46-action",
             "type": "create",
-            "description": "Create a triage plan for patient treatment",
+            "description": "Create a triage plan for patient treatment.",
             "resource": "ProcedureRequest"
         }
     ]
@@ -45,7 +45,7 @@ if selector_val == 'resource':
             "value": "PDS:sars:resource",
             "title": "Resource"}
     }
-    summary_card = "70% of clinicians should change their PPE."
+    summary_card = "Recommend 70% of clinicians change their PPE."
     suggestion_card = {
         "uuid": "e1187895-ad57-4ff7-a1f1-ccf954b2fe46",
         "label": "Change PPE",
@@ -86,7 +86,7 @@ config = {
     {
         "id": "LOINC:21840-4",
         "title": "Sex",
-        "legalValues": { "type": "string" },
+        "legalValues": { "type": "string", "enum": ['female', 'male'] },
         "group": "Profile",
         "why": "Sex is used to assess patient risk for SARS"
     },
@@ -98,18 +98,11 @@ config = {
         "why": "BMI is used to assess patient risk for SARS"
     },
     {
-        "id": "LOINC:42130-5",
-        "title": "Latitude",
-        "group": "GeoLocation",
-        "legalValues": { "type": "number" },
-        "why": "latitude geo-location of the patient's residence is used to assess patient risk for SARS."
-    },
-    {
-        "id": "LOINC:64011-0",
-        "title": "Longitude",
-        "group": "GeoLocation",
-        "legalValues": { "type": "number" },
-        "why": "longitude geo-location of the patient's residence is used to assess patient risk for SARS."
+        "id": "LOINC:56799-0",
+        "title": "Address",
+        "group": "Profile",
+        "legalValues": { "type": "string" },
+        "why": "Address of the patient's residence is used to assess patient risk for SARS."
     },
     {
         "id": "LOINC:LP172921-1",
@@ -124,6 +117,13 @@ config = {
         "group": "Pre-existing Condition",
         "legalValues": { "type": "boolean" },
         "why": "pulmonary disease pre-existing condition is used to assess patient risk for SARS."
+    },
+    {
+        "id": "LOINC:LP128504-0",
+        "title": "Autoimmune disease",
+        "group": "Pre-existing Condition",
+        "legalValues": { "type": "boolean" },
+        "why": "Autoimmune disease pre-existing condition is used to assess patient risk for SARS."
     },
     {
         "id": "LOINC:45701-0",
@@ -223,31 +223,31 @@ def generate_vis_outputs(age=None, weight=None, bmi=None, location=None):
             "id": "oid-1",
             "name": "Active cases",
             "description": "Daily active cases along with model projection for the next week at {}".format(p_loc),
-            "data": generate_time_series_data(50),
+            "data": generate_time_series_exponential_growth_data(50),
             "specs": [
-                generate_vis_spec("line_chart", "Date", "Total number of active cases",
+                generate_vis_spec("line_chart", "Date (Days since March 15)", "Total number of active cases",
                                   "Active cases",
                                   "Number of currently infected cases at {} along with model projection for the "
                                   "next week".format(p_loc)),
             ]
-        },
-        {
+        }
+    ]
+    if selector_val == 'treatment':
+        outputs.append({
             "id": "oid-2",
             "name": "Case growth trend",
             "description": "Daily cases growth trend signified by growth factor at {} along with "
                            "model projection for the next week".format(p_loc),
-            "data": generate_multi_time_series_data(50, 2, ['all age group', 'patient age group']),
+            "data": generate_multi_time_series_exponential_growth_data(50, 2, ['all age group', 'patient age group']),
             "specs": [
-                generate_vis_spec("multiple_line_chart", "Date", "Daily cases growth factor",
+                generate_vis_spec("multiple_line_chart", "Date (Days since March 15)", "Daily cases growth factor",
                                   "Daily cases growth trend",
                                   "Growth factor of daily new cases at {} is computed as every "
                                   "day's new cases divided by new cases on the previous day. A growth factor above 1 "
                                   "indicates an increase while a growth factor between 0 and 1 indicates a decline. "
                                   "A growth factor constantly above 1 could signal exponential growth.".format(p_loc)),
             ]
-        }
-    ]
-    if selector_val == 'treatment':
+        })
         outputs.append({
             "id": "oid-3",
             "name": "Mortality",
@@ -282,12 +282,25 @@ def generate_vis_outputs(age=None, weight=None, bmi=None, location=None):
             })
     else:
         # resource management
+        outputs.append({
+            "id": "oid-2",
+            "name": "Resources needed",
+            "description": "Resources needed at {} along with "
+                           "model projection for the next week".format(p_loc),
+            "data": generate_multi_time_series_exponential_growth_data(50, 3, ['ICU beds', 'Ventilators', 'All resources']),
+            "specs": [
+                generate_vis_spec("multiple_line_chart", "Date (Days since March 15)", "Needed resource count",
+                                  "Resources needed",
+                                  "Resources needed including model projection for the next week at {}".format(p_loc)),
+            ]
+        })
         outputs.append(
             {
                 "id": "oid-6",
                 "name": "Clinician to patient plot",
                 "description": "Patient to clinician plot at three nearby hospitals",
-                "data": generate_multi_scatter_plot_data(50, 3, ['UNC hospital', 'Duke hospital', "WakeMed"]),
+                "data": generate_multi_scatter_plot_data(50, 4, ['UNC hospital', 'Duke hospital', "WakeMed",
+                                                                 "Mobile hospitals"]),
                 "specs": [
                     generate_vis_spec("multiple_scatter_plot", "Number of patients", "Number of clinicians",
                                       "Clinician to patient scatter plot",
@@ -299,7 +312,8 @@ def generate_vis_outputs(age=None, weight=None, bmi=None, location=None):
                 "id": "oid-7",
                 "name": "PPE to clinician plot",
                 "description": "PPE to clinician plot at three nearby hospitals",
-                "data": generate_multi_scatter_plot_data(50, 3, ['UNC hospital', 'Duke hospital', "WakeMed"]),
+                "data": generate_multi_scatter_plot_data(50, 4, ['UNC hospital', 'Duke hospital', "WakeMed",
+                                                                 "Mobile hospitals"]),
                 "specs": [
                     generate_vis_spec("multiple_scatter_plot", "Number of clinicians", "Number of PPEs",
                                       "PPE to clinician scatter plot",
@@ -312,7 +326,8 @@ def generate_vis_outputs(age=None, weight=None, bmi=None, location=None):
                 "id": "oid-8",
                 "name": "ICU bed to patient plot",
                 "description": "ICU bed to patient plot at three nearby hospitals",
-                "data": generate_multi_scatter_plot_data(50, 3, ['UNC hospital', 'Duke hospital', "WakeMed"]),
+                "data": generate_multi_scatter_plot_data(50, 3, ['UNC hospital', 'Duke hospital', "WakeMed",
+                                                                 "Mobile hospitals"]),
                 "specs": [
                     generate_vis_spec("multiple_scatter_plot", "Number of patients", "Number of ICU beds",
                                       "ICU bed to patient scatter plot",
@@ -325,7 +340,8 @@ def generate_vis_outputs(age=None, weight=None, bmi=None, location=None):
                 "id": "oid-9",
                 "name": "Ventilator to patient plot",
                 "description": "Ventilator to patient plot at three nearby hospitals",
-                "data": generate_multi_scatter_plot_data(50, 3, ['UNC hospital', 'Duke hospital', "WakeMed"]),
+                "data": generate_multi_scatter_plot_data(50, 3, ['UNC hospital', 'Duke hospital', "WakeMed",
+                                                                 "Mobile hospitals"]),
                 "specs": [
                     generate_vis_spec("multiple_scatter_plot", "Number of patients", "Number of ventilators",
                                       "Ventilator to patient scatter plot",

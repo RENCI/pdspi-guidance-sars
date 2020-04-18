@@ -55,18 +55,11 @@ config = {
         "why": "BMI is used to assess patient risk for SARS"
     },
     {
-        "id": "LOINC:42130-5",
-        "title": "Latitude",
-        "group": "GeoLocation",
-        "legalValues": { "type": "number" },
-        "why": "latitude geo-location of the patient's residence is used to assess patient risk for SARS."
-    },
-    {
-        "id": "LOINC:64011-0",
-        "title": "Longitude",
-        "group": "GeoLocation",
-        "legalValues": { "type": "number" },
-        "why": "longitude geo-location of the patient's residence is used to assess patient risk for SARS."
+        "id": "LOINC:56799-0",
+        "title": "Address",
+        "group": "Profile",
+        "legalValues": {"type": "string"},
+        "why": "Address of the patient's residence is used to assess patient risk for SARS."
     },
     {
         "id": "LOINC:LP172921-1",
@@ -81,6 +74,13 @@ config = {
         "group": "Pre-existing Condition",
         "legalValues": { "type": "boolean" },
         "why": "pulmonary disease pre-existing condition is used to assess patient risk for SARS."
+    },
+    {
+        "id": "LOINC:LP128504-0",
+        "title": "Autoimmune disease",
+        "group": "Pre-existing Condition",
+        "legalValues": { "type": "boolean" },
+        "why": "Autoimmune disease pre-existing condition is used to assess patient risk for SARS."
     },
     {
         "id": "LOINC:45701-0",
