@@ -54,36 +54,84 @@ paths:
                         "id": "LOINC:30525-0",
                         "title": "Age",
                         "legalValues": { "type": "number", "minimum": "0" },
+                        "group": "Profile",
                         "why": "Age is used to assess patient risk for SARS."
                     },
                     {
                         "id": "LOINC:21840-4",
                         "title": "Sex",
                         "legalValues": { "type": "string" },
+                        "group": "Profile",
                         "why": "Sex is used to assess patient risk for SARS."
                     },
                     {
                         "id": "LOINC:39156-5",
                         "title": "BMI",
+                        "group": "Profile",
                         "legalValues": { "type": "number", "minimum": "0" },
                         "why": "BMI is used to assess patient risk for SARS."
+                    },
+                    {
+                      "id": "LOINC:42130-5",
+                      "title": "Latitude",
+                      "group": "GeoLocation",
+                      "legalValues": { "type": "number" },
+                      "why": "latitude geo-location of the patient's residence is used to assess patient risk for SARS."
+                    },
+                    {
+                      "id": "LOINC:64011-0",
+                      "title": "Longitude",
+                      "group": "GeoLocation",
+                      "legalValues": { "type": "number" },
+                      "why": "longitude geo-location of the patient's residence is used to assess patient risk for SARS."
+                    },
+                    {
+                      "id": "LOINC:LP172921-1",
+                      "title": "Cardiovascular disease",
+                      "group": "Pre-existing Condition",
+                      "legalValues": { "type": "boolean" },
+                      "why": "cardiovascular disease pre-existing condition is used to assess patient risk for SARS."
+                    },
+                    {
+                      "id": "LOINC:54542-6",
+                      "title": "Pulmonary disease",
+                      "group": "Pre-existing Condition",
+                      "legalValues": { "type": "boolean" },
+                      "why": "pulmonary disease pre-existing condition is used to assess patient risk for SARS."
                     },
                     {
                       "id": "LOINC:45701-0",
                       "title": "Fever",
                       "legalValues": { "type": "boolean"},
+                      "group": "Symptom",
                       "why": "Fever is one major symptom of SARS"
+                    },
+                    {
+                      "id": "LOINC:LP212175-6",
+                      "title": "Date of fever onset",
+                      "legalValues": { "type": "string"},
+                      "group": "Symptom",
+                      "why": "Date of fever onset info is important for SARS patient risk assessment"
                     },
                     {
                       "id": "LOINC:64145-6",
                       "title": "Cough",
                       "legalValues": { "type": "boolean"},
+                      "group": "Symptom",
                       "why": "Cough is one major symptom of SARS"
+                    },
+                    {
+                      "id": "LOINC:85932-2",
+                      "title": "Date of cough onset",
+                      "legalValues": { "type": "string"},
+                      "group": "Symptom",
+                      "why": "Date of cough onset info is important for SARS patient risk assessment"
                     },
                     {
                       "id": "LOINC:54564-0",
                       "title": "Shortness of breath",
                       "legalValues": { "type": "boolean"},
+                      "group": "Symptom",
                       "why": "Shortness of breath is one major symptom of SARS"
                     } ]
                 }
@@ -409,6 +457,10 @@ components:
           type: string
           description: "Provides the client with a human-readable, non-standard justification for why the plugin needs this particular variable. This can be rendered by the client to provide the end-user with rationale for the patient values, but does not address how the value was computed."
           example: "Age is used to assess patient risk for SARS"
+        group:
+          type: string
+          description: "Provides the client with grouping patient variables into multiple groups"
+          example: "Body Type"
     Selector:
       description: "Used for selecting plugins"
       type: object
