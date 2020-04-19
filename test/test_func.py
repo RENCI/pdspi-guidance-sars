@@ -43,7 +43,7 @@ config = {
     {
         "id": "LOINC:21840-4",
         "title": "Sex",
-        "legalValues": { "type": "string" },
+        "legalValues": { "type": "string", "enum": ['female', 'male'] },
         "group": "Profile",
         "why": "Sex is used to assess patient risk for SARS"
     },
@@ -115,7 +115,8 @@ config = {
         "title": "Shortness of breath",
         "legalValues": { "type": "boolean"},
         "group": "Symptom",
-        "why": "Shortness of breath is one major symptom of SARS"
+        "why": "Shortness of breath is"
+               " one major symptom of SARS"
     } ]
 }
 
