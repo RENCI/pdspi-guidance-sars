@@ -17,7 +17,10 @@ selector_config = {
         "value": "PDS:sars:treatment",
         "title": "Treatment" }
 }
-summary_card = "The patient has high risk of infection. Recommend to test the patient for SARS virus with a treatment plan."
+summary_card = "The patient is estimated to have a high risk of infection based on current patient-local " \
+               "SARS-CoV2 spread patterns and reported symptoms and behaviors. Based on current and " \
+               "projected capacity and patient disease status, recommend to test the patient for COVID-19 " \
+               "and isolate at home until results are received."
 suggestion_card = {
     "uuid": "e1187895-ad57-4ff7-a1f1-ccf954b2fe46",
     "label": "High risk patient",
