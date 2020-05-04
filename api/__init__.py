@@ -18,7 +18,7 @@ selector_config = {
         "title": "Treatment" }
 }
 summary_card = "The patient is estimated to have a high risk of infection based on current patient-local " \
-               "SARS-CoV2 spread patterns and reported symptoms and behaviors. Based on current and " \
+               "SARS-CoV-2 spread patterns and reported symptoms and behaviors. Based on current and " \
                "projected capacity and patient disease status, recommend to test the patient for COVID-19 " \
                "and isolate at home until results are received."
 suggestion_card = {
