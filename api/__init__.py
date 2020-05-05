@@ -17,10 +17,11 @@ selector_config = {
         "value": "PDS:sars:treatment",
         "title": "Treatment" }
 }
-summary_card = "The patient is estimated to have a high risk of infection based on current patient-local " \
-               "SARS-CoV-2 spread patterns and reported symptoms and behaviors. Based on current and " \
-               "projected capacity and patient disease status, recommend to test the patient for COVID-19 " \
-               "and isolate at home until results are received."
+summary_card = "Recommend patient be tested for COVID-19 and self-quarantine."
+details = "The patient is estimated to have a high risk of infection based on current patient-local " \
+          "SARS-CoV-2 spread patterns and reported symptoms and behaviors. Based on current and " \
+          "projected capacity and patient disease status, recommend to test the patient for COVID-19 " \
+          "and isolate at home until results are received."
 suggestion_card = {
     "uuid": "e1187895-ad57-4ff7-a1f1-ccf954b2fe46",
     "label": "High risk patient",
@@ -49,6 +50,8 @@ if selector_val == 'resource':
             "title": "Resource"}
     }
     summary_card = "Recommend 70% of clinicians change their PPE."
+    details = "Recommend 70% of clinicians change their PPE based on current patient-local SARS-CoV-2 spread " \
+              "patterns, patient disease status, and current and projected PPE capacity."
     suggestion_card = {
         "uuid": "e1187895-ad57-4ff7-a1f1-ccf954b2fe46",
         "label": "Change PPE",
@@ -174,7 +177,7 @@ guidance = {
             "id": "string",
             "title": "Recommendation",
             "summary": summary_card,
-            "detail": "some sort of optional GitHub Markdown details",
+            "detail": details,
             "indicator": "critical",
             "source": {
                 "label": "Human-readable source label",
