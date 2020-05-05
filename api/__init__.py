@@ -180,9 +180,9 @@ guidance = {
             "detail": details,
             "indicator": "critical",
             "source": {
-                "label": "Human-readable source label",
-                "url": "https://example.com",
-                "icon": "https://example.com/img/icon-100px.png"
+                "label": "PDS SARS guidance",
+                "url": "https://github.com/renci/pdspi-guidance-sars",
+                "icon": "https://txscience.renci.org/wp-content/uploads/2019/08/cropped-Web-Logo-5.png"
             },
             "suggestions": [
                 suggestion_card
@@ -190,10 +190,9 @@ guidance = {
             "selectionBehavior": "1",
             "links": [
                 {
-                    "label": "SMART Example App",
-                    "url": "string",
-                    "type": "string",
-                    "appContext": "string"
+                    "label": "Priorities for testing patients with suspected COVID-19 infection",
+                    "url": "https://www.cdc.gov/coronavirus/2019-ncov/downloads/priority-testing-patients.pdf",
+                    "type": "absolute"
                 }
             ]
         }
