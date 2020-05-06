@@ -104,6 +104,13 @@ config = {
         "why": "BMI is used to assess patient risk for SARS"
     },
     {
+        "id": "LOINC:LP21258-6",
+        "title": "Oxygen saturation",
+        "group": "Profile",
+        "legalValues": { "type": "number", "minimum": "0" },
+        "why": "Oxygen saturation is used to assess patient risk for SARS."
+    },
+    {
         "id": "LOINC:56799-0",
         "title": "Address",
         "group": "Profile",
