@@ -189,8 +189,6 @@ guidance = {
                     "label": "Human-readable suggestion label",
                     "actions": [
                         {
-                            "title": "string",
-                            "id": "string",
                             "type": "create",
                             "description": "Create a prescription for Acetaminophen 250 MG",
                             "resource": "MedicationRequest"

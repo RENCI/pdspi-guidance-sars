@@ -27,8 +27,6 @@ suggestion_card = {
     "label": "High risk patient",
     "actions": [
         {
-            "title": "Diagnosis and treatment",
-            "id": "e1187895-ad57-4ff7-a1f1-ccf954b2fe46-action",
             "type": "create",
             "description": "Create an order for a diagnostic test for COVID19",
             "resource": "DiagnosticOrder"
@@ -57,8 +55,6 @@ if selector_val == 'resource':
         "label": "Change PPE",
         "actions": [
             {
-                "title": "Resource management",
-                "id": "e1187895-ad57-4ff7-a1f1-ccf954b2fe46-action",
                 "type": "create",
                 "description": "Create a resource management plan for clinicians to change PPE",
                 "resource": "ProcedureRequest"
