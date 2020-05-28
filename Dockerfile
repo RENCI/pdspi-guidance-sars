@@ -1,15 +1,11 @@
-FROM python:3-alpine
+FROM renci/alpine-data-science:1.0.0
 
-RUN mkdir -p /usr/src/app
-WORKDIR /usr/src/app
-
-RUN apk --no-cache add gcc musl-dev
-RUN pip3 install --no-cache-dir flask gevent==1.4.0 gunicorn==19.9.0 connexion[swagger-ui] oslash
+RUN pip3 install --no-cache-dir covid-modeling==0.1.1
 
 COPY api /usr/src/app/api
 COPY tx-utils/src /usr/src/app
+COPY data /usr/src/app/data
 
 ENTRYPOINT ["gunicorn"]
 
 CMD ["-w", "4", "-b", "0.0.0.0:8080", "api.server:create_app()"]
-

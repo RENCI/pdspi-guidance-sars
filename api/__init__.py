@@ -2,7 +2,8 @@ import os
 import requests
 
 from api.utils import generate_time_series_exponential_growth_data, generate_multi_time_series_exponential_growth_data, \
-    generate_scatter_plot_data, generate_multi_scatter_plot_data, generate_histogram_data
+    generate_scatter_plot_data, generate_multi_scatter_plot_data, generate_histogram_data, get_multi_time_series_data, \
+    get_multi_time_series_nytimes_data
 
 
 pds_host = os.getenv("PDS_HOST", "localhost")
@@ -229,14 +230,13 @@ def generate_vis_outputs(age=None, weight=None, bmi=None, location=None):
     outputs = [
         {
             "id": "oid-1",
-            "name": "Active cases",
+            "name": "Active cases and deaths",
             "description": "Daily active cases along with model projection for the next week at {}".format(p_loc),
-            "data": generate_time_series_exponential_growth_data(50),
+            "data": get_multi_time_series_nytimes_data(state=location if location else 'NC'),
             "specs": [
-                generate_vis_spec("line_chart", "Date (Days since March 15)", "Total number of active cases",
-                                  "Active cases",
-                                  "Number of currently infected cases at {} along with model projection for the "
-                                  "next week".format(p_loc)),
+                generate_vis_spec("multiple_line_chart", "Date", "Total number of people",
+                                  "Active cases and deaths",
+                                  "Number of currently infected cases and deaths at {}.".format(p_loc)),
             ]
         }
     ]
@@ -246,7 +246,8 @@ def generate_vis_outputs(age=None, weight=None, bmi=None, location=None):
             "name": "Case growth trend",
             "description": "Daily cases growth trend signified by growth factor at {} along with "
                            "model projection for the next week".format(p_loc),
-            "data": generate_multi_time_series_exponential_growth_data(50, 2, ['all age group', 'patient age group']),
+            "data": get_multi_time_series_data(state=location if location else 'NC'),
+            #"data": generate_multi_time_series_exponential_growth_data(50, 2, ['all age group', 'patient age group']),
             "specs": [
                 generate_vis_spec("multiple_line_chart", "Date (Days since March 15)", "Daily cases growth factor",
                                   "Daily cases growth trend",
