@@ -42,7 +42,7 @@ def _convert_data(data: dict) -> dict:
     return out
 
 
-def _read_nytimes_data(url):
+def _read_nytimes_data(url:str) -> (dict, dict):
     response = urlopen(url)
     byts = response.read()
     data = io.StringIO(byts.decode())
@@ -62,7 +62,7 @@ def _read_nytimes_data(url):
             else:
                 cases.setdefault(date, []).append(0)
                 deaths.setdefault(date, []).append(0)
-    return cases, deaths
+    return (cases, deaths)
 
 
 def _convert_nytimes_data(data: dict) -> dict:
@@ -89,23 +89,26 @@ def get_multi_time_series_nytimes_data(state='NC'):
     data = []
     n = states[state]
     datafile = "https://raw.githubusercontent.com/nytimes/covid-19-data/master/us-states.csv"
-    cases_dict, deaths_dict = _read_nytimes_data(datafile)
+    (cases_dict, deaths_dict) = _read_nytimes_data(datafile)
     cases_df = pd.DataFrame.from_dict(get_nytimes_state_level(_convert_nytimes_data(cases_dict)))
     deaths_df = pd.DataFrame.from_dict(get_nytimes_state_level(_convert_nytimes_data(deaths_dict)))
-    df_filter = cases_df['state'] == n
+    case_df_filter = cases_df['state'] == n
+    death_df_filter = deaths_df['state'] == n
     out = {
-        'confirmed cases': cases_df[df_filter].drop('state', axis=1),
-        'deaths': deaths_df[df_filter].drop('state', axis=1)
+        'confirmed cases': cases_df[case_df_filter].drop('state', axis=1),
+        'deaths': deaths_df[death_df_filter].drop('state', axis=1)
     }
     # Generate all the traces.
     # Each distancing rate is a different plot, which is made visible with the update buttons
     for key, df_values in out.items():
+        index = 0
         for date, value in df_values.items():
             data.append({
-                'x': date,
-                'y': value,
+                'x': index,
+                'y': int(value),
                 'group': key
             })
+            index += 1
     return data
 
 
