@@ -2,7 +2,8 @@ import os
 import requests
 
 from api.utils import generate_time_series_exponential_growth_data, generate_multi_time_series_exponential_growth_data, \
-    generate_scatter_plot_data, generate_multi_scatter_plot_data, generate_histogram_data
+    generate_scatter_plot_data, generate_multi_scatter_plot_data, generate_histogram_data, get_multi_time_series_data, \
+    get_multi_time_series_nytimes_data
 
 
 pds_host = os.getenv("PDS_HOST", "localhost")
@@ -229,31 +230,30 @@ def generate_vis_outputs(age=None, weight=None, bmi=None, location=None):
     outputs = [
         {
             "id": "oid-1",
-            "name": "Active cases",
-            "description": "Daily active cases along with model projection for the next week at {}".format(p_loc),
-            "data": generate_time_series_exponential_growth_data(50),
+            "name": "Active cases and deaths",
+            "description": "Daily active cases and deaths at {}".format(p_loc),
+            "data": get_multi_time_series_nytimes_data(state=location if location else 'NC'),
             "specs": [
-                generate_vis_spec("line_chart", "Date (Days since March 15)", "Total number of active cases",
-                                  "Active cases",
-                                  "Number of currently infected cases at {} along with model projection for the "
-                                  "next week".format(p_loc)),
+                generate_vis_spec("multiple_line_chart", "Date (Days since January 21)", "Total number of people",
+                                  "Active cases and deaths",
+                                  "Number of currently infected cases and deaths at {}.".format(p_loc))
             ]
         }
     ]
     if selector_val == 'treatment':
         outputs.append({
             "id": "oid-2",
-            "name": "Case growth trend",
-            "description": "Daily cases growth trend signified by growth factor at {} along with "
-                           "model projection for the next week".format(p_loc),
-            "data": generate_multi_time_series_exponential_growth_data(50, 2, ['all age group', 'patient age group']),
+            "name": "Epidemics trend prediction",
+            "description": "SIR (Susceptible-Infected-Removed) predictions for the next "
+                           "60 days at {}".format(p_loc),
+            "data": get_multi_time_series_data(state=location if location else 'NC'),
+            #"data": generate_multi_time_series_exponential_growth_data(50, 2, ['all age group', 'patient age group']),
             "specs": [
-                generate_vis_spec("multiple_line_chart", "Date (Days since March 15)", "Daily cases growth factor",
-                                  "Daily cases growth trend",
-                                  "Growth factor of daily new cases at {} is computed as every "
-                                  "day's new cases divided by new cases on the previous day. A growth factor above 1 "
-                                  "indicates an increase while a growth factor between 0 and 1 indicates a decline. "
-                                  "A growth factor constantly above 1 could signal exponential growth.".format(p_loc)),
+                generate_vis_spec("multiple_line_chart", "Date (Days since March 15)", "Number of people",
+                                  "Infected, recovered, susceptible, dead predictions",
+                                  "Use Penn Death model to make SIR (Susceptible-Infected-Removed) predictions for "
+                                  "the next 60 days at {} given the number of susceptible, infected, recovered, and "
+                                  "death today".format(p_loc))
             ]
         })
         outputs.append({
@@ -292,14 +292,14 @@ def generate_vis_outputs(age=None, weight=None, bmi=None, location=None):
         # resource management
         outputs.append({
             "id": "oid-2",
-            "name": "Resources needed",
-            "description": "Resources needed at {} along with "
-                           "model projection for the next week".format(p_loc),
-            "data": generate_multi_time_series_exponential_growth_data(50, 3, ['ICU beds', 'Ventilators', 'All resources']),
+            "name": "Hospital resource usage",
+            "description": "Projected hospital resource usage at {}".format(p_loc),
+            "data": get_multi_time_series_data(state=location if location else 'NC', type='Hospital Use'),
+            #"data": generate_multi_time_series_exponential_growth_data(50, 3, ['ICU beds', 'Ventilators', 'All resources']),
             "specs": [
-                generate_vis_spec("multiple_line_chart", "Date (Days since March 15)", "Needed resource count",
-                                  "Resources needed",
-                                  "Resources needed including model projection for the next week at {}".format(p_loc)),
+                generate_vis_spec("multiple_line_chart", "Date (Days since March 15)", "Number of people",
+                                  "Hospital resources usage",
+                                  "Projected hospital resource usage at {}".format(p_loc)),
             ]
         })
         outputs.append(
