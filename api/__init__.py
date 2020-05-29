@@ -249,7 +249,7 @@ def generate_vis_outputs(age=None, weight=None, bmi=None, location=None):
             "data": get_multi_time_series_data(state=location if location else 'NC'),
             #"data": generate_multi_time_series_exponential_growth_data(50, 2, ['all age group', 'patient age group']),
             "specs": [
-                generate_vis_spec("multiple_line_chart", "Date (Days since March 15)", "Number of people",
+                generate_vis_spec("multiple_line_chart", "Date (Days since March 24)", "Number of people",
                                   "Infected, recovered, susceptible, dead predictions",
                                   "Use Penn Death model to make SIR (Susceptible-Infected-Removed) predictions for "
                                   "the next 60 days at {} given the number of susceptible, infected, recovered, and "
@@ -297,7 +297,7 @@ def generate_vis_outputs(age=None, weight=None, bmi=None, location=None):
             "data": get_multi_time_series_data(state=location if location else 'NC', type='Hospital Use'),
             #"data": generate_multi_time_series_exponential_growth_data(50, 3, ['ICU beds', 'Ventilators', 'All resources']),
             "specs": [
-                generate_vis_spec("multiple_line_chart", "Date (Days since March 15)", "Number of people",
+                generate_vis_spec("multiple_line_chart", "Date (Days since March 24)", "Number of people",
                                   "Hospital resources usage",
                                   "Projected hospital resource usage at {}".format(p_loc)),
             ]
