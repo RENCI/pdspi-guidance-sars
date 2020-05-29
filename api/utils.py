@@ -153,6 +153,7 @@ def _get_model_data(state='NC', type='SIR', sds=0):
     social distancing
     :return:
     """
+    n = states[state]
     census = pd.read_csv("data/census.csv")
     pops = census[["NAME", "POPESTIMATE2019"]]
     nms = pops["NAME"]
@@ -164,37 +165,20 @@ def _get_model_data(state='NC', type='SIR', sds=0):
         for x in get_hopkins()
     )
     # the zeros mess up our slope
-    us = conf.sum(0).drop("Province/State").copy()
-    us = us.loc[us != 0]
-    growth_rate = get_slope(us)
-    t_double = doubling_time(growth_rate)
-    state_growths_list: List[Any] = []
-    for i in range(conf.shape[0]):
-        data = conf.iloc[i, :].drop("Province/State")
-        data = data.loc[data != 0]
-        # balance the growth rate towards the aggregate growth rate
-        state_growths_list += [(get_slope(data) + growth_rate) / 2]
-    # in general, things are similar to the aggregate rate, but a bit more
-    # pessimistic
-    # print(sum(state_growths) / len(state_growths) - growth_rate)
-    state_growths: Dict[Any, Any] = dict(zip(conf["Province/State"], state_growths_list))
-    d_times = {k: doubling_time(v) for k, v in state_growths.items()}
-    d_times[nms[0]] = t_double
-    names = [x for x in nms if x in d_times.keys()]
+    state_conf = conf[conf['Province/State'] == n]
+    data = state_conf.drop("Province/State", axis=1)
+    data = data.iloc[0]
+    data = data.loc[data != 0]
+    state_growth = get_slope(data)
+    td = doubling_time(state_growth)
     new_names = {i: v for i, v in enumerate(conf["Province/State"])}
     c_tot, d_tot, r_tot = (x.sum(1).rename(new_names) for x in [conf, dead, rec])
-    c_tot["United States"] = c_tot.sum()
-    d_tot["United States"] = d_tot.sum()
-    r_tot["United States"] = r_tot.sum()
-    pops[pops["NAME"] == "United States"]["POPESTIMATE2019"].values[0]
 
-    n = states[state]
     state_curve = {}
     N = pops[pops["NAME"] == n]["POPESTIMATE2019"].values[0]
     I = c_tot[n]
     R = r_tot[n]
     D = d_tot[n]
-    td = d_times[n]
     model = PennDeath(N, I, R, D, 0, contact_reduction=sds, t_double=td, recover_time=t_recovery)
     curve, occ = model.sir(60)
     sir = {
