@@ -204,7 +204,7 @@ guidance = {
 }
 
 
-def generate_vis_spec(typeid, x_axis_title, y_axis_title, chart_title, chart_desc):
+def generate_vis_spec(typeid, x_axis_title, y_axis_title, chart_title, chart_desc, time_unit=''):
     json_post_headers = {
         "Content-Type": "application/json",
         "Accept": "application/json"
@@ -214,7 +214,8 @@ def generate_vis_spec(typeid, x_axis_title, y_axis_title, chart_title, chart_des
         "x_axis_title": x_axis_title,
         "y_axis_title": y_axis_title,
         "chart_title": chart_title,
-        "chart_description": chart_desc
+        "chart_description": chart_desc,
+        "time_unit": time_unit
     }
     url_str = "http://{}:{}/{}/plugin/tx-vis/vega_spec".format(pds_host, pds_port, pds_version)
     resp = requests.post(url_str, headers=json_post_headers, json=vega_spec_input)
@@ -234,9 +235,10 @@ def generate_vis_outputs(age=None, weight=None, bmi=None, location=None):
             "description": "Daily active cases and deaths at {}".format(p_loc),
             "data": get_multi_time_series_nytimes_data(state=location if location else 'NC'),
             "specs": [
-                generate_vis_spec("multiple_line_chart", "Date (Days since January 21)", "Total number of people",
+                generate_vis_spec("multiple_line_chart", "Date", "Number of people",
                                   "Active cases and deaths",
-                                  "Number of currently infected cases and deaths at {}.".format(p_loc))
+                                  "Number of currently infected cases and deaths at {}.".format(p_loc),
+                                  "monthdate")
             ]
         }
     ]

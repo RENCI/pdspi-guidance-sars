@@ -101,14 +101,12 @@ def get_multi_time_series_nytimes_data(state='NC'):
     # Generate all the traces.
     # Each distancing rate is a different plot, which is made visible with the update buttons
     for key, df_values in out.items():
-        index = 0
         for date, value in df_values.items():
             data.append({
-                'x': index,
+                'x': date,
                 'y': int(value),
                 'group': key
             })
-            index += 1
     return data
 
 
