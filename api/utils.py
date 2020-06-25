@@ -2,6 +2,8 @@ from random import seed, random
 import csv
 import io
 import math
+import json
+from os import path
 from typing import Any, Dict, List
 from urllib.request import urlopen
 import pandas as pd
@@ -203,16 +205,27 @@ def get_multi_time_series_data(state='NC', type='SIR', sds=0):
     :return:
     """
     data = []
-    out = _get_model_data(state, type, sds)
-    # Generate all the traces.
-    # Each distancing rate is a different plot, which is made visible with the update buttons
-    for key, values in out[type].items():
-        for i in range(len(values)):
-            data.append({
-                'x': i,
-                'y': values[i],
-                'group': key
-            })
+    file_name = ''
+    if type == 'SIR':
+        file_name = 'data/sir_patient_prediction_data.json'
+    elif type == 'Hospital Use':
+        file_name = 'data/sir_hospital_prediction_data.json'
+    if path.exists(file_name):
+        with open(file_name) as f:
+            data = json.load(f)
+            # print('load sir prediction data from file', flush=True)
+    else:
+        # print('compute sir model prediction data', flush=True)
+        out = _get_model_data(state, type, sds)
+        # Generate all the traces.
+        # Each distancing rate is a different plot, which is made visible with the update buttons
+        for key, values in out[type].items():
+            for i in range(len(values)):
+                data.append({
+                    'x': i,
+                    'y': values[i],
+                    'group': key
+                })
     return data
 
 
