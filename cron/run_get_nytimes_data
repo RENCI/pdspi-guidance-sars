@@ -1,0 +1,2 @@
+#!/bin/sh
+/usr/local/bin/python3 /usr/src/app/script/get_multi_time_series_nytimes_data.py

@@ -88,28 +88,36 @@ def get_nytimes_state_level(d: dict) -> dict:
 
 
 def get_multi_time_series_nytimes_data(state='NC'):
-    data = []
-    n = states[state]
-    datafile = "https://raw.githubusercontent.com/nytimes/covid-19-data/master/us-states.csv"
-    (cases_dict, deaths_dict) = _read_nytimes_data(datafile)
-    cases_df = pd.DataFrame.from_dict(get_nytimes_state_level(_convert_nytimes_data(cases_dict)))
-    deaths_df = pd.DataFrame.from_dict(get_nytimes_state_level(_convert_nytimes_data(deaths_dict)))
-    case_df_filter = cases_df['state'] == n
-    death_df_filter = deaths_df['state'] == n
-    out = {
-        'confirmed cases': cases_df[case_df_filter].drop('state', axis=1),
-        'deaths': deaths_df[death_df_filter].drop('state', axis=1)
-    }
-    # Generate all the traces.
-    # Each distancing rate is a different plot, which is made visible with the update buttons
-    for key, df_values in out.items():
-        for date, value in df_values.items():
-            data.append({
-                'x': date,
-                'y': int(value),
-                'group': key
-            })
-    return data
+    file_name = 'data/multi_time_series_nytimes_data.json'
+    if path.exists(file_name):
+        with open(file_name) as f:
+            state_data = json.load(f)
+            # print('load nytimes data from file', flush=True)
+            n = states[state]
+            return state_data[n]
+    else:
+        data = []
+        n = states[state]
+        datafile = "https://raw.githubusercontent.com/nytimes/covid-19-data/master/us-states.csv"
+        (cases_dict, deaths_dict) = _read_nytimes_data(datafile)
+        cases_df = pd.DataFrame.from_dict(get_nytimes_state_level(_convert_nytimes_data(cases_dict)))
+        deaths_df = pd.DataFrame.from_dict(get_nytimes_state_level(_convert_nytimes_data(deaths_dict)))
+        case_df_filter = cases_df['state'] == n
+        death_df_filter = deaths_df['state'] == n
+        out = {
+            'confirmed cases': cases_df[case_df_filter].drop('state', axis=1),
+            'deaths': deaths_df[death_df_filter].drop('state', axis=1)
+        }
+        # Generate all the traces.
+        # Each distancing rate is a different plot, which is made visible with the update buttons
+        for key, df_values in out.items():
+            for date, value in df_values.items():
+                data.append({
+                    'x': date,
+                    'y': int(value),
+                    'group': key
+                })
+        return data
 
 
 def get_hopkins() -> (dict, dict, dict):
