@@ -427,9 +427,9 @@ components:
             - FHIR
             - Default FHIR
             - Default Mapper
-            description: >-
-              A human-readable value for the type. 'g'=Guidance, 'c'=Convenience,
-              'm'=Mapper, 'f'=FHIR, 'mD'=Default Mapper, 'fD'=Default FHIR
+          description: >-
+            A human-readable value for the type. 'g'=Guidance, 'c'=Convenience,
+            'm'=Mapper, 'f'=FHIR, 'mD'=Default Mapper, 'fD'=Default FHIR
         settingsDefaults:
           $ref: '#/components/schemas/Settings'
     Guidance:
@@ -478,8 +478,8 @@ components:
         advanced:
           type: array
           description: 'Set of supporting data outputs for visualization'
-            items:
-              $ref: '#/components/schemas/Output'
+          items:
+            $ref: '#/components/schemas/Output'
         timeout:
           type: integer
           description: >-
@@ -823,10 +823,10 @@ components:
           example: "Patient variable"
         timestamp:
           type: string
-            description: >-
-              The time used to compute the patient variable. For example, this could be the current time
-              if a patient is presenting for treatment, or in a retrospective study, it could be an intervention
-              date, or any date within the retrospective study timeframe.
+          description: >-
+            The time used to compute the patient variable. For example, this could be the current time
+            if a patient is presenting for treatment, or in a retrospective study, it could be an intervention
+            date, or any date within the retrospective study timeframe.
           format: date-time
           example: "2019-12-03T13:41:09.942+00:00"
     Card:
