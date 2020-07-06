@@ -375,13 +375,13 @@ def get_guidance(body):
 
     inputs = []
     location = None
-    for var in body["settingsDefaults"]["patientVariables"]:
+    for var in body["settings_requested"]["modelParameters"]:
         if var['id'] == 'pdspi-guidance-sars:loc':
             location = var['parameterValue']['value']
     age = None
     weight = None
     bmi = None
-    for var in body["userSuppliedPatientVariables"]:
+    for var in body['settings_requested']["patientVariables"]:
         if var['id'] == 'LOINC:30525-0':
             age = var["variableValue"]['value']
         elif var['id'] == 'LOINC:29463-7':
