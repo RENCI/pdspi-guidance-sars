@@ -67,109 +67,111 @@ config = {
     "title": pi_title,
     "piid": piid,
     "pluginType": "g",
-    "pluginSelectors": [
-        selector_config
-    ],
-    "pluginParameterDefaults": [ {
-        "id": "pdspi-guidance-sars:loc",
-        "title": "Hospital location (State)",
-        "parameterDescription": "Please choose a state to indicate the hospital location for which you would like to get triage guidance.",
-        "parameterValue": { "value": "NC" },
-        "legalValues": {
-            "type": "string",
-            "enum": [ "NC", "NY", "PA", "SC", "VA"] }
-    } ],
-    "requiredPatientVariables": [ {
-        "id": "LOINC:30525-0",
-        "title": "Age",
-        "legalValues": { "type": "number", "minimum": "0" },
-        "group": "Profile",
-        "why": "Age is used to assess patient risk for SARS"
-    },
-    {
-        "id": "LOINC:21840-4",
-        "title": "Sex",
-        "legalValues": { "type": "string", "enum": ['female', 'male'] },
-        "group": "Profile",
-        "why": "Sex is used to assess patient risk for SARS"
-    },
-    {
-        "id": "LOINC:39156-5",
-        "title": "BMI",
-        "legalValues": { "type": "number", "minimum": "0" },
-        "group": "Profile",
-        "why": "BMI is used to assess patient risk for SARS"
-    },
-    {
-        "id": "LOINC:LP21258-6",
-        "title": "Oxygen saturation",
-        "group": "Profile",
-        "legalValues": { "type": "number", "minimum": "0" },
-        "why": "Oxygen saturation is used to assess patient risk for SARS."
-    },
-    {
-        "id": "LOINC:56799-0",
-        "title": "Address",
-        "group": "Profile",
-        "legalValues": { "type": "string" },
-        "why": "Address of the patient's residence is used to assess patient risk for SARS."
-    },
-    {
-        "id": "LOINC:LP172921-1",
-        "title": "Cardiovascular disease",
-        "group": "Pre-existing Condition",
-        "legalValues": { "type": "boolean" },
-        "why": "cardiovascular disease pre-existing condition is used to assess patient risk for SARS."
-    },
-    {
-        "id": "LOINC:54542-6",
-        "title": "Pulmonary disease",
-        "group": "Pre-existing Condition",
-        "legalValues": { "type": "boolean" },
-        "why": "pulmonary disease pre-existing condition is used to assess patient risk for SARS."
-    },
-    {
-        "id": "LOINC:LP128504-0",
-        "title": "Autoimmune disease",
-        "group": "Pre-existing Condition",
-        "legalValues": { "type": "boolean" },
-        "why": "Autoimmune disease pre-existing condition is used to assess patient risk for SARS."
-    },
-    {
-        "id": "LOINC:45701-0",
-        "title": "Fever",
-        "legalValues": { "type": "boolean"},
-        "group": "Symptom",
-        "why": "Fever is one major symptom of SARS"
-    },
-    {
-        "id": "LOINC:LP212175-6",
-        "title": "Date of fever onset",
-        "legalValues": { "type": "string"},
-        "group": "Symptom",
-        "why": "Date of fever onset info is important for SARS patient risk assessment"
-    },
-    {
-        "id": "LOINC:64145-6",
-        "title": "Cough",
-        "legalValues": { "type": "boolean"},
-        "group": "Symptom",
-        "why": "Cough is one major symptom of SARS"
-    },
-    {
-        "id": "LOINC:85932-2",
-        "title": "Date of cough onset",
-        "legalValues": { "type": "string"},
-        "group": "Symptom",
-        "why": "Date of cough onset info is important for SARS patient risk assessment"
-    },
-    {
-        "id": "LOINC:54564-0",
-        "title": "Shortness of breath",
-        "legalValues": { "type": "boolean"},
-        "group": "Symptom",
-        "why": "Shortness of breath is one major symptom of SARS"
-    } ]
+    "settingsDefaults": {
+        "pluginSelectors": [
+            selector_config
+        ],
+        "modelParameters": [ {
+            "id": "pdspi-guidance-sars:loc",
+            "title": "Hospital location (State)",
+            "parameterDescription": "Please choose a state to indicate the hospital location for which you would like to get triage guidance.",
+            "parameterValue": { "value": "NC" },
+            "legalValues": {
+                "type": "string",
+                "enum": [ "NC", "NY", "PA", "SC", "VA"] }
+        } ],
+        "patientVariables": [ {
+            "id": "LOINC:30525-0",
+            "title": "Age",
+            "legalValues": { "type": "number", "minimum": "0" },
+            "group": "Profile",
+            "why": "Age is used to assess patient risk for SARS"
+        },
+        {
+            "id": "LOINC:21840-4",
+            "title": "Sex",
+            "legalValues": { "type": "string", "enum": ['female', 'male'] },
+            "group": "Profile",
+            "why": "Sex is used to assess patient risk for SARS"
+        },
+        {
+            "id": "LOINC:39156-5",
+            "title": "BMI",
+            "legalValues": { "type": "number", "minimum": "0" },
+            "group": "Profile",
+            "why": "BMI is used to assess patient risk for SARS"
+        },
+        {
+            "id": "LOINC:LP21258-6",
+            "title": "Oxygen saturation",
+            "group": "Profile",
+            "legalValues": { "type": "number", "minimum": "0" },
+            "why": "Oxygen saturation is used to assess patient risk for SARS."
+        },
+        {
+            "id": "LOINC:56799-0",
+            "title": "Address",
+            "group": "Profile",
+            "legalValues": { "type": "string" },
+            "why": "Address of the patient's residence is used to assess patient risk for SARS."
+        },
+        {
+            "id": "LOINC:LP172921-1",
+            "title": "Cardiovascular disease",
+            "group": "Pre-existing Condition",
+            "legalValues": { "type": "boolean" },
+            "why": "cardiovascular disease pre-existing condition is used to assess patient risk for SARS."
+        },
+        {
+            "id": "LOINC:54542-6",
+            "title": "Pulmonary disease",
+            "group": "Pre-existing Condition",
+            "legalValues": { "type": "boolean" },
+            "why": "pulmonary disease pre-existing condition is used to assess patient risk for SARS."
+        },
+        {
+            "id": "LOINC:LP128504-0",
+            "title": "Autoimmune disease",
+            "group": "Pre-existing Condition",
+            "legalValues": { "type": "boolean" },
+            "why": "Autoimmune disease pre-existing condition is used to assess patient risk for SARS."
+        },
+        {
+            "id": "LOINC:45701-0",
+            "title": "Fever",
+            "legalValues": { "type": "boolean"},
+            "group": "Symptom",
+            "why": "Fever is one major symptom of SARS"
+        },
+        {
+            "id": "LOINC:LP212175-6",
+            "title": "Date of fever onset",
+            "legalValues": { "type": "string"},
+            "group": "Symptom",
+            "why": "Date of fever onset info is important for SARS patient risk assessment"
+        },
+        {
+            "id": "LOINC:64145-6",
+            "title": "Cough",
+            "legalValues": { "type": "boolean"},
+            "group": "Symptom",
+            "why": "Cough is one major symptom of SARS"
+        },
+        {
+            "id": "LOINC:85932-2",
+            "title": "Date of cough onset",
+            "legalValues": { "type": "string"},
+            "group": "Symptom",
+            "why": "Date of cough onset info is important for SARS patient risk assessment"
+        },
+        {
+            "id": "LOINC:54564-0",
+            "title": "Shortness of breath",
+            "legalValues": { "type": "boolean"},
+            "group": "Symptom",
+            "why": "Shortness of breath is one major symptom of SARS"
+        } ]
+    }
 }
 
 guidance = {
@@ -368,11 +370,12 @@ def get_config():
 
 def get_guidance(body):
     def extract(var, attr):
-        return var.get(attr, next(filter(lambda rpv: rpv["id"] == var["id"], config["requiredPatientVariables"]))[attr])
+        return var.get(attr, next(filter(lambda rpv: rpv["id"] == var["id"],
+                                         config["settingsDefaults"]["patientVariables"]))[attr])
 
     inputs = []
     location = None
-    for var in body["pluginParameterValues"]:
+    for var in body["settingsDefaults"]["patientVariables"]:
         if var['id'] == 'pdspi-guidance-sars:loc':
             location = var['parameterValue']['value']
     age = None
@@ -396,8 +399,6 @@ def get_guidance(body):
         })
     return {
         **guidance,
-        "justification": {
-            "inputs": inputs,
-            "outputs": generate_vis_outputs(age=age, weight=weight, bmi=bmi, location=location)
-        }
+        "settings_used": {'patientVariables': inputs},
+        "advanced": generate_vis_outputs(age=age, weight=weight, bmi=bmi, location=location)
     }
