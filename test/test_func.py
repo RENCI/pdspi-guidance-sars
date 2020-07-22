@@ -213,7 +213,7 @@ guidance = {
 guidance_input = {
     "piid": "pdspi-guidance-sars-treatment",
     "ptid": "38",
-    "settings_requested": {
+    "settingsRequested": {
         "timestamp": "2019-12-03T13:41:09.942+00:00",
         "modelParameters": [ {
             "id": "pdspi-guidance-sars:loc",
@@ -281,7 +281,7 @@ def test_guidance():
     assert "piid" in resp_output
     assert "title" in resp_output
     assert "advanced" in resp_output
-    assert "settings_used" in resp_output
+    assert "settingsUsed" in resp_output
     assert "cards" in resp_output
     for output in resp_output['advanced']:
         assert "data" in output
