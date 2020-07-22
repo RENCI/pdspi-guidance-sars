@@ -134,7 +134,7 @@ guidance = {
     "piid": "pdspi-guidance-sars-treatment",
     "title": "SARS guidance for patient treatment",
     "txid": "38-1",
-    "settings_used": {
+    "settingsUsed": {
         "timestamp": "2019-12-03T13:41:09.942+00:00",
         "patientVariables": [ {
             "id": "LOINC:30525-0",
