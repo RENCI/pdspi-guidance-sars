@@ -8,7 +8,7 @@ COPY data /usr/src/app/data
 COPY script /usr/src/app/script
 COPY cron /etc/periodic/daily
 
-RUN python3 /usr/src/app/script/get_multi_time_series_nytimes_data.py
+# RUN python3 /usr/src/app/script/get_multi_time_series_nytimes_data.py
 
 ENTRYPOINT ["gunicorn"]
 CMD ["-w", "4", "-b", "0.0.0.0:8080", "api.server:create_app()"]
