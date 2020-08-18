@@ -192,81 +192,85 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Guidance'
-            example:
-              { "piid": "pdspi-guidance-sars-treatment",
-                "ptid": "38",
-                "settingsRequested": {
-                  "timestamp": "2020-04-03T13:41:09.942+00:00",
-                  "modelParameters": [ {
-                                          "id": "pdspi-guidance-sars:loc",
-                                          "title": "Hospital location (State)",
-                                          "parameterDescription": "Please choose a state to indicate the hospital location for which you would like to get triage guidance.",
-                                          "parameterValue": { "value": "NC" }
-                                        } ],
-                  "patientVariables": [    {
-                       "id": "LOINC:30525-0",
-                       "title": "Age",
-                       "variableValue": {
-                         "value": "0.5",
-                         "units": "years"
-                       },
-                       "how": "The value was specified by the end user.",
-                       "timestamp": "2020-04-03T13:41:09.942+00:00"
-                    }, {
-                      "id": "LOINC:21840-4",
-                      "title": "Sex",
-                      "variableValue": {
-                         "value": "female"
+              type: array
+              items:
+                $ref: '#/components/schemas/Guidance'
+              example:
+                [{ "piid": "pdspi-guidance-sars-treatment",
+                    "patientId": "38",
+                    "settingsRequested": {
+                      "timestamp": "2020-04-03T13:41:09.942+00:00",
+                      "modelParameters": [ {
+                                            "id": "pdspi-guidance-sars:loc",
+                                            "title": "Hospital location (State)",
+                                            "parameterDescription": "Please choose a state to indicate the hospital location for which you would like to get triage guidance.",
+                                            "parameterValue": { "value": "NC" }
+                                            } ],
+                      "patientVariables": [    {
+                           "id": "LOINC:30525-0",
+                           "title": "Age",
+                           "variableValue": {
+                             "value": "0.5",
+                             "units": "years"
+                           },
+                         "how": "The value was specified by the end user.",
+                         "timestamp": "2020-04-03T13:41:09.942+00:00"
+                      }, {
+                        "id": "LOINC:21840-4",
+                        "title": "Sex",
+                        "variableValue": {
+                           "value": "female"
+                        },
+                        "how": "The value was specified by the end user.",
+                        "timestamp": "2020-04-03T13:41:09.942+00:00"
                       },
-                      "how": "The value was specified by the end user.",
-                      "timestamp": "2020-04-03T13:41:09.942+00:00"
-                    },
-                    {
-                       "id": "LOINC:39156-5",
-                       "title": "BMI",
-                       "variableValue": {
-                         "value": "23.2"
-                       },
-                       "how": "The value was specified by the end user.",
-                       "timestamp": "2020-04-03T13:41:09.942+00:00"
-                    },
-                    {
-                       "id": "LOINC:45701-0",
-                       "title": "Fever",
-                       "variableValue": {
-                         "value": true
-                       },
-                       "how": "The value was specified by the end user.",
-                       "timestamp": "2020-04-03T13:41:09.942+00:00"
-                    },
-                    {
-                      "id": "LOINC:64145-6",
-                      "title": "Cough",
-                      "variableValue": {
-                         "value": true
+                      {
+                         "id": "LOINC:39156-5",
+                         "title": "BMI",
+                         "variableValue": {
+                           "value": "23.2"
+                         },
+                         "how": "The value was specified by the end user.",
+                         "timestamp": "2020-04-03T13:41:09.942+00:00"
                       },
-                      "how": "The value was specified by the end user.",
-                      "timestamp": "2020-04-03T13:41:09.942+00:00"
-                    },
-                    {
-                       "id": "LOINC:54564-0",
-                       "title": "Shortness of breath",
-                       "variableValue": {
-                         "value": true
-                       },
-                       "how": "The value was specified by the end user.",
-                       "timestamp": "2020-04-03T13:41:09.942+00:00"
-                    }
-                  ]
-                }
-              }
+                      {
+                         "id": "LOINC:45701-0",
+                         "title": "Fever",
+                         "variableValue": {
+                           "value": true
+                         },
+                         "how": "The value was specified by the end user.",
+                         "timestamp": "2020-04-03T13:41:09.942+00:00"
+                      },
+                      {
+                        "id": "LOINC:64145-6",
+                        "title": "Cough",
+                        "variableValue": {
+                           "value": true
+                        },
+                        "how": "The value was specified by the end user.",
+                        "timestamp": "2020-04-03T13:41:09.942+00:00"
+                      },
+                      {
+                         "id": "LOINC:54564-0",
+                         "title": "Shortness of breath",
+                         "variableValue": {
+                           "value": true
+                         },
+                         "how": "The value was specified by the end user.",
+                         "timestamp": "2020-04-03T13:41:09.942+00:00"
+                      }
+                    ]
+                  }
+                }]
       responses:
         '200':
           description: "Guidance matching query"
           content: 
             application/json:
               schema:
+                type: array
+                items:
                   $ref: '#/components/schemas/Guidance'
         '400':
           description: "Bad Request"
@@ -460,7 +464,7 @@ components:
           description: >-
             The transaction id sent in the Guidance. If none were sent, a unique id will be created and sent back here
           example: "38-1"
-        ptid:
+        patientId:
           description: >-
             The ID of the patient for which guidance is required. If not
             specified, depend only on the 'variableValue' in 'PatientVariable', which is part of 'inputs'

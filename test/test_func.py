@@ -210,9 +210,9 @@ guidance = {
 }
 
 
-guidance_input = {
+guidance_input = [{
     "piid": "pdspi-guidance-sars-treatment",
-    "ptid": "38",
+    "patientId": "38",
     "settingsRequested": {
         "timestamp": "2019-12-03T13:41:09.942+00:00",
         "modelParameters": [ {
@@ -271,19 +271,20 @@ guidance_input = {
         "how": "The value was specified by the end user."
       } ]
     }
-}
+}]
 
 
 def test_guidance():
     resp = requests.post("http://pdspi-guidance-sars:8080/guidance", headers=json_post_headers, json=guidance_input)
     resp_output = resp.json()
     assert resp.status_code == 200
-    assert "piid" in resp_output
-    assert "title" in resp_output
-    assert "advanced" in resp_output
-    assert "settingsUsed" in resp_output
-    assert "cards" in resp_output
-    for output in resp_output['advanced']:
+    assert len(resp_output) == 1
+    assert "piid" in resp_output[0]
+    assert "title" in resp_output[0]
+    assert "advanced" in resp_output[0]
+    assert "settingsUsed" in resp_output[0]
+    assert "cards" in resp_output[0]
+    for output in resp_output[0]['advanced']:
         assert "data" in output
         assert "specs" in output
 

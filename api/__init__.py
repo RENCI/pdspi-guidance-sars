@@ -375,30 +375,34 @@ def get_guidance(body):
 
     inputs = []
     location = None
-    for var in body["settingsRequested"]["modelParameters"]:
-        if var['id'] == 'pdspi-guidance-sars:loc':
-            location = var['parameterValue']['value']
-    age = None
-    weight = None
-    bmi = None
-    for var in body['settingsRequested']["patientVariables"]:
-        if var['id'] == 'LOINC:30525-0':
-            age = var["variableValue"]['value']
-        elif var['id'] == 'LOINC:29463-7':
-            weight = var["variableValue"]['value']
-        elif var['id'] == 'LOINC:39156-5':
-            bmi = var["variableValue"]['value']
-        inputs.append({
-            "id": var["id"],
-            "title": extract(var, "title"),
-            "how": var["how"],
-            "why": extract(var, "why"),
-            "variableValue": var["variableValue"],
-            "legalValues": extract(var, "legalValues"),
-            "timestamp": var.get("timestamp", "2020-02-18T18:54:57.099Z")
+    ret_guidance = []
+
+    for body_item in body:
+        for var in body_item["settingsRequested"]["modelParameters"]:
+            if var['id'] == 'pdspi-guidance-sars:loc':
+                location = var['parameterValue']['value']
+        age = None
+        weight = None
+        bmi = None
+        for var in body_item['settingsRequested']["patientVariables"]:
+            if var['id'] == 'LOINC:30525-0':
+                age = var["variableValue"]['value']
+            elif var['id'] == 'LOINC:29463-7':
+                weight = var["variableValue"]['value']
+            elif var['id'] == 'LOINC:39156-5':
+                bmi = var["variableValue"]['value']
+            inputs.append({
+                "id": var["id"],
+                "title": extract(var, "title"),
+                "how": var["how"],
+                "why": extract(var, "why"),
+                "variableValue": var["variableValue"],
+                "legalValues": extract(var, "legalValues"),
+                "timestamp": var.get("timestamp", "2020-02-18T18:54:57.099Z")
+            })
+        ret_guidance.append({
+            **guidance,
+            "settingsUsed": {'patientVariables': inputs},
+            "advanced": generate_vis_outputs(age=age, weight=weight, bmi=bmi, location=location)
         })
-    return {
-        **guidance,
-        "settingsUsed": {'patientVariables': inputs},
-        "advanced": generate_vis_outputs(age=age, weight=weight, bmi=bmi, location=location)
-    }
+    return ret_guidance
